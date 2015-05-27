@@ -1,0 +1,40 @@
+multiget (1.2.0-3.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Switch to automake1.11 and regenerate all the autotools. (Closes:
+    #724419)
+
+ -- Eric Dorland <eric@debian.org>  Sun, 02 Mar 2014 16:37:11 -0500
+
+multiget (1.2.0-3) unstable; urgency=low
+
+  * debian/control:
+    - change maintainer's email.
+    - bump standards version to 3.8.1 
+  * debian/patches/crash_under_gbk.dpatch: added. (LP: #374715)
+  * debian/patched/xunlei_etc.dpatch: added. (closes: #513388)
+  * debian/patches/00list: updated.
+
+ -- LI Daobing <lidaobing@debian.org>  Mon, 11 May 2009 21:52:02 +0800
+
+multiget (1.2.0-2) unstable; urgency=low
+
+  * FTBFS with GCC 4.4: missing #include (Closes: #510677)
+    - debian/patches/gcc-4.3.dpatch: rename to gcc-4.4.dpatch
+    - debian/patches/gcc-4.4.dpatch: updated
+    - debian/patches/00list: updated
+  * debian/control: add ${misc:Depends} to depends, fix
+    debhelper-but-no-misc-depends 
+  * debian/source.lintian-overrides: added. 
+
+ -- LI Daobing <lidaobing@gmail.com>  Sun, 04 Jan 2009 19:58:53 +0800
+
+multiget (1.2.0-1) unstable; urgency=low
+
+  [ LI Daobing ]
+  * Initial release. (closes: #388427)
+
+  [ Julian Andres Klode ]
+  * debian/multiget.1: Added a man page
+
+ -- LI Daobing <lidaobing@gmail.com>  Tue, 08 Jul 2008 22:45:51 +0800

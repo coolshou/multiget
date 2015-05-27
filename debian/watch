@@ -1,0 +1,4 @@
+# See uscan(1) for format
+
+version=3
+http://sf.net/multiget/multiget-([\d\.]+)\.src\.tar\.bz2

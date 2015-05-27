@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=MultiGet
+Comment=MultiGet Downloader
+Comment[zh_CN]=MultiGet 下载器
+Type=Application
+Terminal=false
+Exec=multiget
+Icon=/usr/share/pixmaps/multiget_48.xpm
+Categories=Network;

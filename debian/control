@@ -1,0 +1,30 @@
+Source: multiget
+Section: net
+Priority: optional
+Maintainer: LI Daobing <lidaobing@debian.org>
+Uploaders: Julian Andres Klode <jak@debian.org>
+Build-Depends: debhelper (>= 5), cdbs, libwxgtk2.8-dev, libglade2-dev, autoconf, automake1.11|automake(>=1.11), dpatch, intltool, libtool
+Standards-Version: 3.8.1
+Vcs-Browser: http://git.debian.org/?p=collab-maint/multiget.git
+Vcs-Git: git://git.debian.org/git/collab-maint/multiget.git
+Homepage: http://multiget.sourceforge.net/
+
+Package: multiget
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: graphical download manager
+ MultiGet is an easy-to-use GUI file downloader for Windows/Linux/BSDs/MacOs.
+ It's programmed in C++ and has a GUI based on wxWidgets. It supports HTTP/FTP
+ protocols which covers the requirements of most users. It supports multi-task
+ with multi-thread on multi-server. It supports resuming downloads if the Web
+ server supports it, and if you like, you can reconfig the thread number
+ without stopping the current task. It's also support SOCKS 4,4a,5 proxy, ftp
+ proxy, http proxy.
+ .
+ It also support a feature called P2SP, or in other words, get file from
+ multiple servers, and combine the data from different site into one file. This
+ makes downloads complete much faster.
+ .
+ MultiGet also supports switching language dynamically, you can choose Chinese
+ or English interface.  Generally it will automatic choose a proper language
+ for you.

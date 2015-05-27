@@ -1,0 +1,21 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## crash_under_gbk.dpatch by LI Daobing <lidaobing@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: multiget will crash under zh_CN.GBK locale. as a workaround, I disable
+## DP: this locale here.
+## DP: https://bugs.launchpad.net/ubuntu/+source/multiget/+bug/374715
+
+@DPATCH@
+diff -urNad multiget~/src/mgapp.cpp multiget/src/mgapp.cpp
+--- multiget~/src/mgapp.cpp	2007-02-25 21:43:20.000000000 +0800
++++ multiget/src/mgapp.cpp	2009-05-11 21:25:28.000000000 +0800
+@@ -139,7 +139,7 @@
+     }
+ 
+     else if ( strcasecmp( lang, "zh_CN.GB2312" ) == 0 ||
+-              strcasecmp( lang, "zh_CN.GBK" ) == 0 ||
++              //strcasecmp( lang, "zh_CN.GBK" ) == 0 ||
+               strcasecmp( lang, "zh_CN.GB18030" ) == 0 )
+     {
+         m_MultiString.SetLang( ZH_CN_18030 );

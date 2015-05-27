@@ -1,0 +1,78 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## gcc-4.4.dpatch by LI Daobing <lidaobing@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: add missing headers for gcc-4.4
+## DP: see http://sourceforge.net/support/tracker.php?aid=1975057
+
+@DPATCH@
+diff -urNad multiget~/src/batch.cpp multiget/src/batch.cpp
+--- multiget~/src/batch.cpp	2008-11-02 15:30:40.000000000 +0800
++++ multiget/src/batch.cpp	2009-01-04 19:44:23.000000000 +0800
+@@ -24,8 +24,12 @@
+ 
+ #include "batch.h"
+ #include "common.h"
++#include <cstdio>
++#include <cstdlib>
+ #include <iostream>
+ 
++using namespace std;
++
+ CBatch::CBatch( std::string str )
+ {
+     /*
+diff -urNad multiget~/src/common.cpp multiget/src/common.cpp
+--- multiget~/src/common.cpp	2008-11-02 15:30:40.000000000 +0800
++++ multiget/src/common.cpp	2009-01-04 19:43:33.000000000 +0800
+@@ -26,9 +26,11 @@
+ #include "speedctrl.h"
+ #include "mirroradmin.h"
+ 
+-
++#include <cstdlib>
+ #include <pthread.h>
+ 
++using namespace std;
++
+ #ifdef WIN32
+ #include <windows.h>
+ 
+diff -urNad multiget~/src/mgftpbase.cpp multiget/src/mgftpbase.cpp
+--- multiget~/src/mgftpbase.cpp	2008-11-02 15:30:40.000000000 +0800
++++ multiget/src/mgftpbase.cpp	2009-01-04 19:45:03.000000000 +0800
+@@ -22,6 +22,11 @@
+  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+  */
+ 
++#include <cstdio>
++#include <cstdlib>
++
++using namespace std;
++
+ #ifdef WIN32
+ #include <winsock2.h>
+ #endif
+diff -urNad multiget~/src/mghttpbase.cpp multiget/src/mghttpbase.cpp
+--- multiget~/src/mghttpbase.cpp	2007-01-13 19:09:02.000000000 +0800
++++ multiget/src/mghttpbase.cpp	2009-01-04 19:45:40.000000000 +0800
+@@ -47,6 +47,7 @@
+ #endif
+ 
+ #include "mghttpbase.h"
++#include <cstdio>
+ #include <iostream>
+ 
+ using namespace std;
+diff -urNad multiget~/src/mgurlparser.cpp multiget/src/mgurlparser.cpp
+--- multiget~/src/mgurlparser.cpp	2008-11-02 15:30:40.000000000 +0800
++++ multiget/src/mgurlparser.cpp	2009-01-04 19:43:33.000000000 +0800
+@@ -26,6 +26,8 @@
+ #include "mgurlparser.h"
+ #include "common.h"
+ #include <iostream>
++#include <cstring>
++#include <cstdlib>
+ extern std::string gDefFtpPass;
+ 
+ using namespace std;

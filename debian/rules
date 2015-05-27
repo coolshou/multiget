@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+
+DEB_AUTO_UPDATE_AUTOCONF := yes
+DEB_AUTO_UPDATE_ACLOCAL := 1.14
+DEB_AUTO_UPDATE_AUTOMAKE := 1.14
+DEB_AUTO_UPDATE_LIBTOOL := pre
+DEB_AUTOMAKE_ARGS := --add-missing --copy
+
+include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+#include /usr/share/cdbs/1/rules/dpatch.mk
+
+install/multiget::
+	mkdir -p $(CURDIR)/debian/multiget/usr/share/pixmaps
+	install -m644 newicons/48/logo_48.xpm $(CURDIR)/debian/multiget/usr/share/pixmaps/multiget_48.xpm
+	rm -rf $(CURDIR)/debian/multiget/usr/doc
+	rm -rf $(CURDIR)/debian/multiget/usr/share/locale
+
+clean::
+	rm -f intltool-merge
