@@ -49,6 +49,8 @@ EVT_MENU( mgID_PRELOAD, CTaskList::OnReload )
 
 END_EVENT_TABLE()
 
+#define _MGSTR(s) wxGetApp().GetWxStr(s)
+
 CTaskList::CTaskList( wxWindow* parent )
         : wxListView( parent, -1, wxDefaultPosition, wxDefaultSize,
                       wxLC_REPORT | wxLC_SINGLE_SEL | wxFULL_REPAINT_ON_RESIZE  )
@@ -65,7 +67,7 @@ CTaskList::CTaskList( wxWindow* parent )
     AssignImageList( imlist, wxIMAGE_LIST_SMALL );
 
     wxListItem itemCol;
-    itemCol.SetText( _( "" ) );
+    itemCol.SetText( wxT( "" ) );
     //itemCol.SetImage( 0 );
     itemCol.SetAlign( wxLIST_FORMAT_CENTER );
     InsertColumn( 0, itemCol );
@@ -73,34 +75,34 @@ CTaskList::CTaskList( wxWindow* parent )
     itemCol.SetImage( -1 );
 
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
-    itemCol.SetText( _("File Name") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_FILENAME ) );
     InsertColumn( 1, itemCol );
     SetColumnWidth( 1, 200 );
-    itemCol.SetText( _("Size") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_SIZE ) );
     itemCol.SetAlign( wxLIST_FORMAT_CENTRE );
     InsertColumn( 2, itemCol );
     SetColumnWidth( 2, 100 );
-    itemCol.SetText( _("Completed") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_FINISH ) );
     itemCol.SetAlign( wxLIST_FORMAT_CENTER );
     InsertColumn( 3, itemCol );
     SetColumnWidth( 3, 100 );
-    itemCol.SetText( _("Progress") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_PROGRESS ) );
     itemCol.SetAlign( wxLIST_FORMAT_CENTER );
     InsertColumn( 4, itemCol );
     SetColumnWidth( 4, 80 );
-    itemCol.SetText( _("Speed") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_SPEED ) );
     itemCol.SetAlign( wxLIST_FORMAT_CENTER );
     InsertColumn( 5, itemCol );
     SetColumnWidth( 5, 100 );
-    itemCol.SetText( _("Time Left") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_LEFTTIME ) );
     itemCol.SetAlign( wxLIST_FORMAT_CENTER );
     InsertColumn( 6, itemCol );
     SetColumnWidth( 6, 100 );
-    itemCol.SetText( _("Retry") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_RETRY ) );
     itemCol.SetAlign( wxLIST_FORMAT_CENTER );
     InsertColumn( 7, itemCol );
     SetColumnWidth( 7, 50 );
-    itemCol.SetText( _("Main URL") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_URL ) );
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
     InsertColumn( 8, itemCol );
     SetColumnWidth( 8, 700 );
@@ -288,27 +290,27 @@ void CTaskList::UpdateTaskList( _TaskAttr& task )
 
     wxString wxs;
 
-    wxs.Printf( _( "%lld" ), task.nLen );
+    wxs.Printf( wxT( "%lld" ), task.nLen );
 
     SetItem( id, 2, wxs );
 
-    wxs.Printf( _( "%lld" ), task.nFinish );
+    wxs.Printf( wxT( "%lld" ), task.nFinish );
 
     SetItem( id, 3, wxs );
 
-    wxs.Printf( _( "%0.2f%%" ), 100 * task.fRatio );
+    wxs.Printf( wxT( "%0.2f%%" ), 100 * task.fRatio );
 
     SetItem( id, 4, wxs );
 
-    wxs.Printf( _( "%dKB/S" ), task.nSpeed / 1024 );
+    wxs.Printf( wxT( "%dKB/S" ), task.nSpeed / 1024 );
 
     SetItem( id, 5, wxs );
 
-    //wxs.Printf( _( "%d S" ), task.nTime );
+    //wxs.Printf( wxT( "%d S" ), task.nTime );
 
     SetItem( id, 6, TimeToString( task.nTime ) );
 
-    wxs.Printf( _( "%d" ), task.nError );
+    wxs.Printf( wxT( "%d" ), task.nError );
 
     SetItem( id, 7, wxs );
 
@@ -391,27 +393,27 @@ void CTaskList::AddTaskList( _TaskAttr& task )
 
     wxString wxs;
 
-    wxs.Printf( _( "%lld" ), task.nLen );
+    wxs.Printf( wxT( "%lld" ), task.nLen );
 
     SetItem( id, 2, wxs );
 
-    wxs.Printf( _( "%lld" ), task.nFinish );
+    wxs.Printf( wxT( "%lld" ), task.nFinish );
 
     SetItem( id, 3, wxs );
 
-    wxs.Printf( _( "%0.2f%%" ), 100 * task.fRatio );
+    wxs.Printf( wxT( "%0.2f%%" ), 100 * task.fRatio );
 
     SetItem( id, 4, wxs );
 
-    wxs.Printf( _( "%dKB/S" ), task.nSpeed / 1024 );
+    wxs.Printf( wxT( "%dKB/S" ), task.nSpeed / 1024 );
 
     SetItem( id, 5, wxs );
 
-    //wxs.Printf( _( "%d S" ), task.nTime );
+    //wxs.Printf( wxT( "%d S" ), task.nTime );
 
     SetItem( id, 6, TimeToString( task.nTime ) );
 
-    wxs.Printf( _( "%d" ), task.nError );
+    wxs.Printf( wxT( "%d" ), task.nError );
 
     SetItem( id, 7, wxs );
 
@@ -427,19 +429,19 @@ wxString CTaskList::TimeToString( int seconds )
 
     if ( seconds < 0 )
     {
-        retstr = _("Unknown");
+        retstr = wxGetApp().GetWxStr( _S_UNKNOW );
         return retstr;
     }
 
     if ( seconds > 86400 )
     {
-        retstr.Printf( _("%d day"), seconds / 86400 );
+        retstr.Printf( wxGetApp().GetWxStr( _S_TASKLIST_DAY ), seconds / 86400 );
 
     }
     else
     {
         wxString temp;
-        temp.Printf( _("%02dh:%02dm:%02ds"),
+        temp.Printf( wxGetApp().GetWxStr( _S_TASKLIST_TIME ),
                      ( seconds % 86400 ) / 3600, ( seconds % 3600 ) / 60, seconds % 60 );
         retstr += temp;
     }
@@ -452,35 +454,35 @@ void CTaskList::DynamicLang()
 
     wxListItem itemCol;
     GetColumn( 1, itemCol ) ;
-    itemCol.SetText( _("File Name") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_FILENAME ) );
     SetColumn( 1, itemCol );
 
     GetColumn( 2, itemCol ) ;
-    itemCol.SetText( _("Size") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_SIZE ) );
     SetColumn( 2, itemCol );
 
     GetColumn( 3, itemCol ) ;
-    itemCol.SetText( _("Completed") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_FINISH ) );
     SetColumn( 3, itemCol );
 
     GetColumn( 4, itemCol ) ;
-    itemCol.SetText( _("Progress") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_PROGRESS ) );
     SetColumn( 4, itemCol );
 
     GetColumn( 5, itemCol ) ;
-    itemCol.SetText( _("Speed") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_SPEED ) );
     SetColumn( 5, itemCol );
 
     GetColumn( 6, itemCol ) ;
-    itemCol.SetText( _("Time Left") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_LEFTTIME ) );
     SetColumn( 6, itemCol );
 
     GetColumn( 7, itemCol ) ;
-    itemCol.SetText( _("Retry") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_RETRY ) );
     SetColumn( 7, itemCol );
 
     GetColumn( 8, itemCol ) ;
-    itemCol.SetText( _("Main URL") );
+    itemCol.SetText( wxGetApp().GetWxStr( _S_URL ) );
     SetColumn( 8, itemCol );
 
 }
@@ -509,26 +511,26 @@ void CTaskList::OnRightClick( wxListEvent& event )
 
     //pop a menu,run,stop,delete,prop ...
     // 菜单开始
-    wxMenu *rootPopMenu = new wxMenu; //( _( "Options" ) );
+    wxMenu *rootPopMenu = new wxMenu; //( wxT( "Options" ) );
 
     wxMenuItem *ti;
 
     ti =
-        new wxMenuItem( rootPopMenu, mgID_PRUN, _("Run task"), _( "help" ) );
+        new wxMenuItem( rootPopMenu, mgID_PRUN, _MGSTR( _S_TIP_RUNTASK ), wxT( "help" ) );
 
     ti->SetBitmap( wxBitmap( run_xpm ) );
 
     rootPopMenu->Append( ti );
 
     ti =
-        new wxMenuItem( rootPopMenu, mgID_PSTOP, _("Stop task"), _( "help" ) );
+        new wxMenuItem( rootPopMenu, mgID_PSTOP, _MGSTR( _S_TIP_STOPTASK ), wxT( "help" ) );
 
     ti->SetBitmap( wxBitmap( stop_xpm ) );
 
     rootPopMenu->Append( ti );
 
     ti =
-        new wxMenuItem( rootPopMenu, mgID_PDELETE, _("Delete task"), _( "help" ) );
+        new wxMenuItem( rootPopMenu, mgID_PDELETE, _MGSTR( _S_TIP_DELETETASK ), wxT( "help" ) );
 
     ti->SetBitmap( wxBitmap( delete_xpm ) );
 
@@ -537,7 +539,7 @@ void CTaskList::OnRightClick( wxListEvent& event )
     rootPopMenu->AppendSeparator();
 
     ti =
-        new wxMenuItem( rootPopMenu, mgID_PRELOAD, _("Redonwload task"), _( "help" ) );
+        new wxMenuItem( rootPopMenu, mgID_PRELOAD, _MGSTR( _S_TIP_RELOADTASK ), wxT( "help" ) );
 
     ti->SetBitmap( wxBitmap( reload_xpm ) );
 
@@ -546,7 +548,7 @@ void CTaskList::OnRightClick( wxListEvent& event )
     rootPopMenu->AppendSeparator();
 
     ti =
-        new wxMenuItem( rootPopMenu, mgID_PROPERTY, _("Show/Modify task properties"), _( "help" ) );
+        new wxMenuItem( rootPopMenu, mgID_PROPERTY, _MGSTR( _S_TIP_PROPERTY ), wxT( "help" ) );
 
     ti->SetBitmap( wxBitmap( property_xpm ) );
 

@@ -39,8 +39,9 @@ EVT_BUTTON( mgID_DELETE_PROXY, CProxyDlg::OnDeleteProxy )
 EVT_CUSTOM( wxEVT_SIZE, wxID_ANY, CProxyDlg::OnSize )
 END_EVENT_TABLE()
 
+#define  _MGSTR(s) wxGetApp().GetWxStr(s)
 CProxyDlg::CProxyDlg( MainFrame* parent )
-        : wxDialog( parent, wxID_ANY, _("Proxy Administrator"), wxDefaultPosition, wxSize( 500, 300 ), wxRESIZE_BORDER | wxDEFAULT_DIALOG_STYLE  )
+        : wxDialog( parent, wxID_ANY, _MGSTR( _S_PROXYDLG_ADMIN ), wxDefaultPosition, wxSize( 500, 300 ), wxRESIZE_BORDER | wxDEFAULT_DIALOG_STYLE  )
 {
     m_pParent = parent;
     proxylist = NULL;
@@ -66,7 +67,7 @@ void CProxyDlg::Init()
     //add head to list
     wxListItem itemCol;
 
-    itemCol.SetText( _("Name") );
+    itemCol.SetText( _MGSTR( _S_PROXYDLG_NAME ) );
 
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
 
@@ -74,7 +75,7 @@ void CProxyDlg::Init()
 
     proxylist->SetColumnWidth( 0, 100 );
 
-    itemCol.SetText( _("Type") );
+    itemCol.SetText( _MGSTR( _S_PROXYDLG_TYPE ) );
 
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
 
@@ -82,7 +83,7 @@ void CProxyDlg::Init()
 
     proxylist->SetColumnWidth( 1, 100 );
 
-    itemCol.SetText( _("Server") );
+    itemCol.SetText( _MGSTR( _S_PROXYDLG_SERVER ) );
 
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
 
@@ -90,7 +91,7 @@ void CProxyDlg::Init()
 
     proxylist->SetColumnWidth( 2, 150 );
 
-    itemCol.SetText( _("Port") );
+    itemCol.SetText( _MGSTR( _S_PROXYDLG_PORT ) );
 
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
 
@@ -98,7 +99,7 @@ void CProxyDlg::Init()
 
     proxylist->SetColumnWidth( 3, 50 );
 
-    itemCol.SetText( _("User") );
+    itemCol.SetText( _MGSTR( _S_PROXYDLG_USER ) );
 
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
 
@@ -106,7 +107,7 @@ void CProxyDlg::Init()
 
     proxylist->SetColumnWidth( 4, 100 );
 
-    itemCol.SetText( _("Password") );
+    itemCol.SetText( _MGSTR( _S_PROXYDLG_PASS ) );
 
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
 
@@ -130,13 +131,13 @@ void CProxyDlg::Init()
     wxBoxSizer* but = new wxBoxSizer( wxHORIZONTAL );
 
 
-    but->Add( new wxButton( this, mgID_ADD_PROXY, _("Add Proxy") ), 0, wxALL, 5 );
+    but->Add( new wxButton( this, mgID_ADD_PROXY, _MGSTR( _S_PROXYDLG_ADDPROXY ) ), 0, wxALL, 5 );
 
-    but->Add( new wxButton( this, mgID_DELETE_PROXY, _("Del Proxy") ), 0, wxALL, 5 );
+    but->Add( new wxButton( this, mgID_DELETE_PROXY, _MGSTR( _S_PROXYDLG_DELPROXY ) ), 0, wxALL, 5 );
 
-    but->Add( new wxButton( this, wxID_OK, _( "OK" ) ), 0, wxALL, 5 );
+    but->Add( new wxButton( this, wxID_OK, wxT( "OK" ) ), 0, wxALL, 5 );
 
-    //	but->Add(new wxButton(this,wxID_CANCEL,_("Cancel")),0,wxALL,5);
+    //	but->Add(new wxButton(this,wxID_CANCEL,wxT("Cancel")),0,wxALL,5);
     all->Add( but, 0, wxALIGN_RIGHT );
 
     SetSizer( all );
@@ -170,14 +171,14 @@ void CProxyDlg::OnAddProxy( wxCommandEvent& event )
 
         if ( dlg.m_name.IsEmpty() || dlg.m_server.IsEmpty() || dlg.m_port <= 0 || dlg.m_port >= 65536 )
         {
-            wxMessageBox( _( "args error." ) );
+            wxMessageBox( wxT( "args error." ) );
             return ;
         }
         else
         {
             if ( !m_pParent->AddProxy( dlg.m_type, dlg.m_name, dlg.m_server, dlg.m_port, dlg.m_user, dlg.m_pass ) )
             {
-                wxMessageBox( _( "add proxy fail,maybe have same name." ) );
+                wxMessageBox( wxT( "add proxy fail,maybe have same name." ) );
                 return ;
             }
             else
@@ -195,7 +196,7 @@ void CProxyDlg::OnDeleteProxy( wxCommandEvent& event )
 
     if ( pos == -1 )
     {
-        wxMessageBox( _( "no select item" ) );
+        wxMessageBox( wxT( "no select item" ) );
         return ;
     }
 
@@ -216,11 +217,11 @@ void CProxyDlg::OnDeleteProxy( wxCommandEvent& event )
     {
         namelist += proxylist->GetItemText( *it );
         namelist2.push_back( proxylist->GetItemText( *it ) );
-        namelist += _( "," );
+        namelist += wxT( "," );
     }
 
-    namelist = _( "Delete below?\n" ) + namelist;
-    wxMessageDialog dlg( this, namelist, _( "cap" ), wxOK | wxCANCEL );
+    namelist = wxT( "Delete below?\n" ) + namelist;
+    wxMessageDialog dlg( this, namelist, wxT( "cap" ), wxOK | wxCANCEL );
 
     if ( wxID_OK == dlg.ShowModal() )
     {
@@ -255,37 +256,37 @@ void CProxyDlg::LoadData()
         {
 
             case 0:
-            x2 = _( "socks auto" );
+            x2 = wxT( "socks auto" );
             break;
 
             case 1:
-            x2 = _( "socks v4" );
+            x2 = wxT( "socks v4" );
             break;
 
             case 2:
-            x2 = _( "socks v4a" );
+            x2 = wxT( "socks v4a" );
             break;
 
             case 3:
-            x2 = _( "socks v5" );
+            x2 = wxT( "socks v5" );
             break;
 
             case 4:
-            x2 = _( "ftp proxy" );
+            x2 = wxT( "ftp proxy" );
             break;
 
             case 5:
-            x2 = _( "http proxy" );
+            x2 = wxT( "http proxy" );
             break;
 
             default:
-            x2 = _( "unknow" );
+            x2 = wxT( "unknow" );
             break;
         }
 
         //x3 = wxString( px.sServer.c_str() );
 			x3 = wxString( px.sServer.c_str(), wxConvLocal ); //unicode patch
-        x4.Printf( _( "%d" ), px.nPort );
+        x4.Printf( wxT( "%d" ), px.nPort );
         //x5 = wxString( px.sUser );
         //x6 = wxString( px.sPass );
 			x5=wxString::FromAscii(px.sUser.c_str());//unicode patch

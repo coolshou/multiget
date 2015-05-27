@@ -24,6 +24,8 @@ EVT_LIST_COL_END_DRAG( wxID_ANY, CTaskDetailReport::OnColumnResize )
 EVT_ERASE_BACKGROUND( CTaskDetailReport::OnErase )
 END_EVENT_TABLE()
 
+#define _MGSTR(s) wxGetApp().GetWxStr(s)
+
 CTaskDetailReport::CTaskDetailReport( wxWindow* parent )
         : wxListView( parent, wxID_ANY, wxDefaultPosition,
                       wxSize( 0, 0 ), wxLC_REPORT | wxLC_SINGLE_SEL )
@@ -31,11 +33,11 @@ CTaskDetailReport::CTaskDetailReport( wxWindow* parent )
 
     SetBackgroundStyle( wxBG_STYLE_COLOUR );
     wxListItem itemCol;
-    itemCol.SetText( _("Name") );
+    itemCol.SetText( _MGSTR( _S_NAME ) );
     itemCol.SetAlign( wxLIST_FORMAT_CENTRE );
     InsertColumn( 0, itemCol );
     SetColumnWidth( 0, 200 );
-    itemCol.SetText( _("Value") );
+    itemCol.SetText( _MGSTR( _S_VALUE ) );
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
     InsertColumn( 1, itemCol );
     SetColumnWidth( 1, 500 );
@@ -72,37 +74,37 @@ void CTaskDetailReport::ShowTaskDetail( _TaskAttr& tsk )
 
     wxString name, value;
 
-    name = _("Task ID");
-    value.Printf( _( "%d" ), tsk.nID );
+    name = _MGSTR( _S_TASKID );
+    value.Printf( wxT( "%d" ), tsk.nID );
     AddInfo( name, value );
 
-    name = _("Main URL");
+    name = _MGSTR( _S_URL );
     wxString url( tsk.sURL.c_str(), wxConvLocal );
     AddInfo( name, url );
 
-	name = _("Number of mirror URL"); //number of mirror
-    value.Printf( _( "%d" ), tsk.sMirrorURL.size() );
+	name = _MGSTR( _S_DETAIL_NOM ); //number of mirror
+    value.Printf( wxT( "%d" ), tsk.sMirrorURL.size() );
     AddInfo( name, value );
 	
-    name = _("Task Status");
+    name = _MGSTR( _S_TASKSTATUS );
 
     switch ( tsk.nStatus )
     {
 
         case _STATUS_RUNNING:
-        value = _("Running");
+        value = _MGSTR( _S_RUNNING );
         break;
 
         case _STATUS_PAUSE:
-        value = _("Pause");
+        value = _MGSTR( _S_DETAIL_PAUSE );
         break;
 
         case _STATUS_WAITING:
-        value = _("Waiting");
+        value = _MGSTR( _S_WAITING );
         break;
 
         case _STATUS_WRONG:
-        value = _("Wrong");
+        value = _MGSTR( _S_WRONG );
         break;
 
         case _STATUS_FINISH_SOFT:
@@ -120,90 +122,90 @@ void CTaskDetailReport::ShowTaskDetail( _TaskAttr& tsk )
         case _STATUS_FINISH_PICTURE:
 
         case _STATUS_FINISH_UNKNOW:
-        value = _("Completed");
+        value = _MGSTR( _S_FINISH );
         break;
 
         case _STATUS_DELETE:
-        value = _("Trash");
+        value = _MGSTR( _S_DELETED );
         break;
 
         default:
-        value = _("Unknown");
+        value = _MGSTR( _S_UNKNOW );
         break;
     }
 
     AddInfo( name, value );
 
-    name = _("Thread Numbers");
-    value.Printf( _( "%d" ), tsk.nThread );
+    name = _MGSTR( _S_THREADNUM );
+    value.Printf( wxT( "%d" ), tsk.nThread );
     AddInfo( name, value );
 
-    name = _("Save Path");
+    name = _MGSTR( _S_DETAIL_SAVEPATH );
     wxString spath( tsk.sSavePath.c_str(), wxConvLocal );
     AddInfo( name, spath );
 
-    name = _("File Name");
+    name = _MGSTR( _S_FILENAME );
     wxString wxFn( tsk.sName.c_str(), wxConvLocal );
     AddInfo( name, wxFn );
 
-    name = _("Size");
-    value.Printf( _( "%lld" ), tsk.nLen );
+    name = _MGSTR( _S_SIZE );
+    value.Printf( wxT( "%lld" ), tsk.nLen );
     AddInfo( name, value );
 
-    name = _("Completed");
-    value.Printf( _( "%lld" ), tsk.nFinish );
+    name = _MGSTR( _S_FINISH );
+    value.Printf( wxT( "%lld" ), tsk.nFinish );
     AddInfo( name, value );
 
-    name = _("Progress");
-    value.Printf( _( "%0.4f%%" ), tsk.fRatio * 100 );
+    name = _MGSTR( _S_PROGRESS );
+    value.Printf( wxT( "%0.4f%%" ), tsk.fRatio * 100 );
     AddInfo( name, value );
 
-    name = _("Speed");
-    value.Printf( _( "%d bytes/s" ), tsk.nSpeed );
+    name = _MGSTR( _S_SPEED );
+    value.Printf( wxT( "%d bytes/s" ), tsk.nSpeed );
     AddInfo( name, value );
 
-    name = _("Error times");
-    value.Printf( _( "%d" ), tsk.nError );
+    name = _MGSTR( _S_ERRORTIME );
+    value.Printf( wxT( "%d" ), tsk.nError );
     AddInfo( name, value );
 
 
-    name = _("SOCKS Proxy");
+    name = _MGSTR( _S_DETAIL_SOCKSPROXY );
     wxString socks( tsk.sSockProxy.c_str(), wxConvLocal );
 
-    if ( socks == _( "" ) )
-        socks = _( "none" );
+    if ( socks == wxT( "" ) )
+        socks = wxT( "none" );
 
     AddInfo( name, socks );
 
-    name = _("FTP Proxy");
+    name = _MGSTR( _S_DETAIL_FTPPROXY );
 
     wxString ftp( tsk.sFtpProxy.c_str(), wxConvLocal );
 
-    if ( ftp == _( "" ) )
-        ftp = _( "none" );
+    if ( ftp == wxT( "" ) )
+        ftp = wxT( "none" );
 
     AddInfo( name, ftp );
 
-    name = _("HTTP Proxy");
+    name = _MGSTR( _S_DETAIL_HTTPPROXY );
 
     wxString http( tsk.sHttpProxy.c_str(), wxConvLocal );
 
-    if ( http == _( "" ) )
-        http = _( "none" );
+    if ( http == wxT( "" ) )
+        http = wxT( "none" );
 
     AddInfo( name, http );
 
 
-    name = _("MD5 sum auto check");
-    value = tsk.bAutoMd5 ? _( "YES" ) : _( "NO" );
+    name = _MGSTR( _S_AUTOCHECKMD5 );
+    value = tsk.bAutoMd5 ? wxT( "YES" ) : wxT( "NO" );
     AddInfo( name, value );
 
-    name = _("MD5 sum");
+    name = _MGSTR( _S_DETAIL_MD5 );
 
     wxString md5( tsk.sMD5.c_str(), wxConvLocal );
 
-    if ( md5 == _( "" ) )
-        md5 = _( "none" );
+    if ( md5 == wxT( "" ) )
+        md5 = wxT( "none" );
 
     AddInfo( name, md5 );
 }
@@ -268,31 +270,31 @@ void CTaskDetailReport::DynamicLang()
 {
 
     wxListItem itemCol;
-    itemCol.SetText( _("Name") );
+    itemCol.SetText( _MGSTR( _S_NAME ) );
     itemCol.SetAlign( wxLIST_FORMAT_CENTRE );
     SetColumn( 0, itemCol );
 
-    itemCol.SetText( _("Value") );
+    itemCol.SetText( _MGSTR( _S_VALUE ) );
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
     SetColumn( 1, itemCol );
 
-    SetItemText(  0, _("Task ID") );
-    SetItemText(  1, _("Main URL") );
-	SetItemText(  2, _("Number of mirror URL") );
-    SetItemText(  3, _("Task Status") );
-    SetItemText(  4, _("Thread Numbers") );
-    SetItemText(  5, _("Save Path") );
-    SetItemText(  6, _("File Name") );
-    SetItemText(  7, _("Size") );
-    SetItemText(  8, _("Completed") );
-    SetItemText(  9, _("Progress") );
-    SetItemText( 10, _("Speed") );
-    SetItemText( 11, _("Error times") );
-    SetItemText( 12, _("SOCKS Proxy") );
-    SetItemText( 13, _("FTP Proxy") );
-    SetItemText( 14, _("HTTP Proxy") );
-    SetItemText( 15, _("MD5 sum auto check") );
-    SetItemText( 16, _("MD5 sum") );
+    SetItemText( 0, _MGSTR( _S_TASKID ) );
+    SetItemText( 1, _MGSTR( _S_URL ) );
+    SetItemText( 2, _MGSTR( _S_DETAIL_NOM ) );
+    SetItemText( 3, _MGSTR( _S_TASKSTATUS ) );
+    SetItemText( 4, _MGSTR( _S_THREADNUM ) );
+    SetItemText( 5, _MGSTR( _S_DETAIL_SAVEPATH ) );
+    SetItemText( 6, _MGSTR( _S_FILENAME ) );
+    SetItemText( 7, _MGSTR( _S_SIZE ) );
+    SetItemText( 8, _MGSTR( _S_FINISH ) );
+    SetItemText( 9, _MGSTR( _S_PROGRESS ) );
+    SetItemText( 10, _MGSTR( _S_SPEED ) );
+    SetItemText( 11, _MGSTR( _S_ERRORTIME ) );
+    SetItemText( 12, _MGSTR( _S_DETAIL_SOCKSPROXY ) );
+    SetItemText( 13, _MGSTR( _S_DETAIL_FTPPROXY ) );
+    SetItemText( 14, _MGSTR( _S_DETAIL_HTTPPROXY ) );
+    SetItemText( 15, _MGSTR( _S_AUTOCHECKMD5 ) );
+    SetItemText( 16, _MGSTR( _S_DETAIL_MD5 ) );
 
     wxSize vs = GetClientSize();
     int fw = GetColumnWidth( 0 );

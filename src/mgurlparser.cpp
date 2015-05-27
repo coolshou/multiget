@@ -25,6 +25,9 @@
 
 #include "mgurlparser.h"
 #include "common.h"
+#include <stdio.h>   //sprintf()
+#include <string.h> //strncasecmp
+#include <cstdlib> //atoi()
 #include <iostream>
 extern std::string gDefFtpPass;
 

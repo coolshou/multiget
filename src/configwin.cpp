@@ -36,6 +36,8 @@ DEFINE_EVENT_TYPE( cfID_SPINCONNECT )
 DEFINE_EVENT_TYPE( cfID_SPINRW )
 DEFINE_EVENT_TYPE( cfID_SPINWAIT )
 
+#define  _MGSTR(s) wxGetApp().GetWxStr(s)
+
 BEGIN_EVENT_TABLE( CConfigWindow, wxDialog )
 
 EVT_BUTTON( cfID_PICKPATH, CConfigWindow::OnPickPath )
@@ -63,7 +65,7 @@ extern _SPEED_MODE gSpeedMode;
 extern std::string gDefSavePath, gDefFtpPass, gsMonitorExt, gsIgnoreExt;
 
 CConfigWindow::CConfigWindow( MainFrame* parent )
-        : wxDialog( parent, -1, _("System Configure"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER )
+        : wxDialog( parent, -1, _MGSTR( _S_SYSCONFIG ), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER )
 {
     m_nTask = gRunTaskNum;
     m_nThread = gTaskDefThread;
@@ -102,17 +104,17 @@ void CConfigWindow::Init()
     wxBoxSizer *all = new wxBoxSizer( wxVERTICAL );
 
     //part 1
-    wxBoxSizer *part1 = new wxStaticBoxSizer( wxVERTICAL, this, _("Task Arguments") );
+    wxBoxSizer *part1 = new wxStaticBoxSizer( wxVERTICAL, this, _MGSTR( _S_CONFIGWIN_TASKARGS ) );
     wxBoxSizer *line1 = new wxBoxSizer( wxHORIZONTAL ); //max run task
-    line1->Add( new wxStaticText( this, -1, _("Max Running Tasks[1-10]:") , wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxALIGN_LEFT | wxEXPAND );
-    m_SpinTask = new wxSpinCtrl( this, cfID_SPINMAXTASK, _( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
+    line1->Add( new wxStaticText( this, -1, _MGSTR( _S_CONFIGWIN_MAXRUNTASK ) , wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxALIGN_LEFT | wxEXPAND );
+    m_SpinTask = new wxSpinCtrl( this, cfID_SPINMAXTASK, wxT( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
     m_SpinTask->SetRange( 1, 10 );
     m_SpinTask->SetValue( m_nTask );
     line1->Add( m_SpinTask, 0, wxALIGN_LEFT );
 
     wxBoxSizer *line2 = new wxBoxSizer( wxHORIZONTAL ); //default thread
-    line2->Add( new wxStaticText( this, -1, _("Default Sessions[1-10]:"), wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxALIGN_LEFT | wxEXPAND );
-    m_SpinThread = new wxSpinCtrl( this, cfID_SPINTHREAD, _( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
+    line2->Add( new wxStaticText( this, -1, _MGSTR( _S_CONFIGWIN_DEFTHREAD ), wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxALIGN_LEFT | wxEXPAND );
+    m_SpinThread = new wxSpinCtrl( this, cfID_SPINTHREAD, wxT( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
     m_SpinThread->SetRange( 1, 10 );
     m_SpinThread->SetValue( m_nThread );
     line2->Add( m_SpinThread, 0, wxALIGN_LEFT );
@@ -121,65 +123,65 @@ void CConfigWindow::Init()
     line3->Add( new wxStaticText(
                     this,
                     -1,
-                    _("Default Save Path:"),
+                    _MGSTR( _S_CONFIGWIN_DEFSAVEPATH ),
                     wxDefaultPosition,
                     wxSize( 160, 25 ) ), 0, wxEXPAND );
     line3->Add( new wxTextCtrl(
                     this,
                     -1,
-                    _( "" ),
+                    wxT( "" ),
                     wxDefaultPosition,
                     wxSize( 100, 25 ),
                     1,
                     wxGenericValidator( &m_sSavePath ) ), 1, wxEXPAND );
 
-    line3->Add( new wxButton( this, cfID_PICKPATH, _( "..." ), wxDefaultPosition, wxSize( 35, 25 ) ), 0, wxALIGN_RIGHT );
+    line3->Add( new wxButton( this, cfID_PICKPATH, wxT( "..." ), wxDefaultPosition, wxSize( 35, 25 ) ), 0, wxALIGN_RIGHT );
     //connect timeout
     //part 2
-    wxBoxSizer *part2 = new wxStaticBoxSizer( wxVERTICAL, this, _("Network Arguments") );
+    wxBoxSizer *part2 = new wxStaticBoxSizer( wxVERTICAL, this, _MGSTR( _S_CONFIGWIN_NETARGS ) );
     wxBoxSizer *line4 = new wxBoxSizer( wxHORIZONTAL );
-    line4->Add( new wxStaticText( this, -1, _("Connect Timeout[10-300]:"), wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxEXPAND );
-    m_SpinConnectTimeOut = new wxSpinCtrl( this, cfID_SPINCONNECT, _( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
+    line4->Add( new wxStaticText( this, -1, _MGSTR( _S_CONFIGWIN_CONNECTTIMEOUT ), wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxEXPAND );
+    m_SpinConnectTimeOut = new wxSpinCtrl( this, cfID_SPINCONNECT, wxT( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
     m_SpinConnectTimeOut->SetRange( 10, 300 );
     m_SpinConnectTimeOut->SetValue( m_nConnectTimeOut );
     line4->Add( m_SpinConnectTimeOut, 0, wxALIGN_LEFT );
 
     wxBoxSizer *line5 = new wxBoxSizer( wxHORIZONTAL );
-    line5->Add( new wxStaticText( this, -1, _("Send/Receive Timeout[10-300]:"), wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxEXPAND );
-    m_SpinTimeOut = new wxSpinCtrl( this, cfID_SPINRW, _( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
+    line5->Add( new wxStaticText( this, -1, _MGSTR( _S_CONFIGWIN_RWTIMEOUT ), wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxEXPAND );
+    m_SpinTimeOut = new wxSpinCtrl( this, cfID_SPINRW, wxT( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
     m_SpinTimeOut->SetRange( 10, 300 );
     m_SpinTimeOut->SetValue( m_nTimeOut );
     line5->Add( m_SpinTimeOut, 0, wxALIGN_LEFT );
     //retry,retry delay
     wxBoxSizer *line6 = new wxBoxSizer( wxHORIZONTAL );
-    line6->Add( new wxStaticText( this, -1, _("Default Retry/Sessions[1-99999]:"), wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxEXPAND );
-    m_SpinRetry = new wxSpinCtrl( this, cfID_SPINRETRY, _( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
+    line6->Add( new wxStaticText( this, -1, _MGSTR( _S_CONFIGWIN_MAXRETRY ), wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxEXPAND );
+    m_SpinRetry = new wxSpinCtrl( this, cfID_SPINRETRY, wxT( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
     m_SpinRetry->SetRange( 1, 99999 );
     m_SpinRetry->SetValue( m_nRetry );
     line6->Add( m_SpinRetry, 0, wxALIGN_LEFT );
 
     wxBoxSizer *line7 = new wxBoxSizer( wxHORIZONTAL );
-    line7->Add( new wxStaticText( this, -1, _("Default Retry Delay[5-3000]:"), wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxEXPAND );
-    m_SpinRetryWait = new wxSpinCtrl( this, cfID_SPINWAIT, _( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
+    line7->Add( new wxStaticText( this, -1, _MGSTR( _S_CONFIGWIN_WAITRETRY ), wxDefaultPosition, wxSize( 150, 25 ) ), 1, wxEXPAND );
+    m_SpinRetryWait = new wxSpinCtrl( this, cfID_SPINWAIT, wxT( "" ), wxDefaultPosition, wxSize( 60, 25 ) ); //
     m_SpinRetryWait->SetRange( 5, 3000 );
     m_SpinRetryWait->SetValue( m_nRetryWait );
     line7->Add( m_SpinRetryWait, 0, wxALIGN_LEFT );
     //FTP pass
 
     //part3 soundtip,FTP pass,speedmode
-    wxBoxSizer *part3 = new wxStaticBoxSizer( wxVERTICAL, this, _("Other") );
+    wxBoxSizer *part3 = new wxStaticBoxSizer( wxVERTICAL, this, _MGSTR( _S_CONFIGWIN_OTHER ) );
     wxBoxSizer *line8 = new wxBoxSizer( wxHORIZONTAL );
 
     line8->Add( new wxStaticText(
                     this,
                     -1,
-                    _("FTP Anon Pass:"),
+                    _MGSTR( _S_CONFIGWIN_ANONPASS ),
                     wxDefaultPosition,
                     wxSize( 110, 25 ) ), 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL );
     line8->Add( new wxTextCtrl(
                     this,
                     -1,
-                    _( "" ),
+                    wxT( "" ),
                     wxDefaultPosition,
                     wxSize( 150, 25 ),
                     1,
@@ -189,24 +191,24 @@ void CConfigWindow::Init()
     line8->Add( new wxStaticText(
                     this,
                     -1,
-                    _("Speed Limit"),
+                    _MGSTR( _S_CONFIGWIN_SPEEDLIMIT ),
                     wxDefaultPosition,
                     wxSize( 90, 25 ) ), 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL );
 
     wxArrayString choices;
-    choices.Add( _("No Limit") );
-    choices.Add( _( "5 M/s" ) );
-    choices.Add( _( "2 M/s" ) );
-    choices.Add( _( "1 M/s" ) );
-    choices.Add( _( "700 KB/s" ) );
-    choices.Add( _( "500 KB/s" ) );
-    choices.Add( _( "400 KB/s" ) );
-    choices.Add( _( "300 KB/s" ) );
-    choices.Add( _( "200 KB/s" ) );
-    choices.Add( _( "100 KB/s" ) );
-    choices.Add( _( "50 KB/s" ) );
-    choices.Add( _( "20 KB/s" ) );
-    choices.Add( _( "10 KB/s" ) );
+    choices.Add( _MGSTR( _S_CONFIGWIN_NOLIMIT ) );
+    choices.Add( wxT( "5 M/s" ) );
+    choices.Add( wxT( "2 M/s" ) );
+    choices.Add( wxT( "1 M/s" ) );
+    choices.Add( wxT( "700 KB/s" ) );
+    choices.Add( wxT( "500 KB/s" ) );
+    choices.Add( wxT( "400 KB/s" ) );
+    choices.Add( wxT( "300 KB/s" ) );
+    choices.Add( wxT( "200 KB/s" ) );
+    choices.Add( wxT( "100 KB/s" ) );
+    choices.Add( wxT( "50 KB/s" ) );
+    choices.Add( wxT( "20 KB/s" ) );
+    choices.Add( wxT( "10 KB/s" ) );
 
     line8->Add( new wxChoice(
                     this,
@@ -218,12 +220,12 @@ void CConfigWindow::Init()
                     wxGenericValidator( &m_SpeedMode ) ), 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL );
     //float win
 
-    wxBoxSizer *monitor = new wxStaticBoxSizer( wxVERTICAL, this, _("Monitor Clipboard") );
+    wxBoxSizer *monitor = new wxStaticBoxSizer( wxVERTICAL, this, _MGSTR( _S_CONFIGWIN_CLIPMONI ) );
     wxBoxSizer *line9 = new wxBoxSizer( wxHORIZONTAL );
     line9->Add( new wxCheckBox(
                     this,
                     -1,
-                    _("Ignore Extentions:"),
+                    _MGSTR( _S_CONFIGWIN_IGNOREEXT ),
                     wxDefaultPosition,
                     wxSize( 160, 25 ),
                     wxCHK_2STATE,
@@ -232,7 +234,7 @@ void CConfigWindow::Init()
     line9->Add( new wxTextCtrl(
                     this,
                     -1,
-                    _( "" ),
+                    wxT( "" ),
                     wxDefaultPosition,
                     wxSize( 200, 50 ),
                     wxTE_BESTWRAP | wxTE_MULTILINE,
@@ -243,7 +245,7 @@ void CConfigWindow::Init()
     line10->Add( new wxCheckBox(
                      this,
                      -1,
-                     _("Capture Extentions:"),
+                     _MGSTR( _S_CONFIGWIN_ONLYEXT ),
                      wxDefaultPosition,
                      wxSize( 160, 25 ),
                      wxCHK_2STATE,
@@ -253,7 +255,7 @@ void CConfigWindow::Init()
     line10->Add( new wxTextCtrl(
                      this,
                      -1,
-                     _( "" ),
+                     wxT( "" ),
                      wxDefaultPosition,
                      wxSize( 200, 50 ),
                      wxTE_BESTWRAP | wxTE_MULTILINE,
@@ -263,7 +265,7 @@ void CConfigWindow::Init()
     line12->Add( new wxCheckBox(
                      this,
                      -1,
-                     _("Sound tip when task finish (Experimental)"),
+                     _MGSTR( _S_CONFIGWIN_SOUND ),
                      wxDefaultPosition,
                      wxSize( 250, 25 ),
                      wxCHK_2STATE,
@@ -272,7 +274,7 @@ void CConfigWindow::Init()
     line12->Add( new wxCheckBox(
                      this,
                      -1,
-                     _("Auto md5 check"),
+                     _MGSTR( _S_CONFIGWIN_AUTOMD5 ),
                      wxDefaultPosition,
                      wxSize( 150, 25 ),
                      wxCHK_2STATE,
@@ -303,8 +305,8 @@ void CConfigWindow::Init()
     all->Add( part3, 0, wxEXPAND );
 
     wxBoxSizer* but = new wxBoxSizer( wxHORIZONTAL );
-    but->Add( new wxButton( this, wxID_CANCEL, _( "Cancel" ) ), 0, wxALL, 5 );
-    but->Add( new wxButton( this, wxID_OK, _( "OK" ) ), 0, wxALL, 5 );
+    but->Add( new wxButton( this, wxID_CANCEL, wxT( "Cancel" ) ), 0, wxALL, 5 );
+    but->Add( new wxButton( this, wxID_OK, wxT( "OK" ) ), 0, wxALL, 5 );
     all->Add( but, 0, wxALIGN_RIGHT | wxALIGN_BOTTOM );
 
     top->Add( all, 1, wxEXPAND | wxALL | wxFIXED_MINSIZE, 5 );
@@ -317,7 +319,7 @@ void CConfigWindow::Init()
 
 void CConfigWindow::OnPickPath( wxCommandEvent& event )
 {
-    wxDirDialog dlg( this, _("Choose a directory to save file"), m_sSavePath, wxDD_NEW_DIR_BUTTON );
+    wxDirDialog dlg( this, _MGSTR( _S_NEW_CHOOSEPATH ), m_sSavePath, wxDD_NEW_DIR_BUTTON );
 
     if ( dlg.ShowModal() == wxID_OK )
     {

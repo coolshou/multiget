@@ -51,6 +51,8 @@ EVT_TREE_SEL_CHANGED( -1, CRightTree::OnSelectChanged )
 EVT_ERASE_BACKGROUND( CRightTree::OnErase )
 END_EVENT_TABLE()
 
+#define  _MGSTR(s) wxGetApp().GetWxStr(s)
+
 CRightTree::CRightTree( wxWindow* parent )
         : wxTreeCtrl( parent, -1, wxDefaultPosition, wxDefaultSize , wxTR_DEFAULT_STYLE | wxFULL_REPAINT_ON_RESIZE )
 {
@@ -90,7 +92,7 @@ void CRightTree::DynamicLang()
     if ( !rid.IsOk() )
         return ;
 
-    SetItemText( rid, _("Information") );
+    SetItemText( rid, _MGSTR( _S_INFORMATION ) );
 
     child = GetFirstChild( rid, cookie );
 
@@ -106,15 +108,15 @@ void CRightTree::DynamicLang()
         {
 
             case - 1:
-            SetItemText( child, _("Pioneer") );
+            SetItemText( child, _MGSTR( _S_PIONEER ) );
             break;
 
             case - 2:
-            SetItemText( child, _("File Info") );
+            SetItemText( child, _MGSTR( _S_FILEINFO ) );
             break;
 
             case - 3:
-            SetItemText( child, _("Progress") );
+            SetItemText( child, _MGSTR( _S_PROGRESS ) );
             break;
 
             case 1:
@@ -138,18 +140,18 @@ void CRightTree::DynamicLang()
             case 10:
             {
                 wxString tx;
-                tx.Printf( _("Thread%d"), pdata->GetData() );
+                tx.Printf( _MGSTR( _S_THREAD ), pdata->GetData() );
                 SetItemText( child, tx );
             }
 
             break;
 
             case 20:
-            SetItemText( child, _("Detail") );
+            SetItemText( child, _MGSTR( _S_DETAIL ) );
             break;
 
             case 21:
-            SetItemText( child, _("Log") );
+            SetItemText( child, _MGSTR( _S_LOG ) );
             break;
 
             default:
@@ -169,7 +171,7 @@ void CRightTree::ShowTask( _TaskAttr* task )
     if ( task == NULL )
     {
         wxTreeItemId rid;
-        rid = AddRoot( _("Information"),
+        rid = AddRoot( _MGSTR( _S_INFORMATION ),
                        0,  //img
                        -1,  //sel img = img
                        new CRightTreeItemData( 0 ) );
@@ -188,7 +190,7 @@ void CRightTree::ShowTask( _TaskAttr* task )
             wxTreeItemId rid, old, tmp;
             bool oldfind = false;
 
-            rid = AddRoot( _("Information"),
+            rid = AddRoot( _MGSTR( _S_INFORMATION ),
                            0,
                            -1,
                            new CRightTreeItemData( 0 ) );
@@ -200,7 +202,7 @@ void CRightTree::ShowTask( _TaskAttr* task )
             }
 
             tmp = AppendItem( rid,
-                              _("Pioneer"),
+                              _MGSTR( _S_PIONEER ),
                               4,
                               -1,
                               new CRightTreeItemData( -1 ) );
@@ -212,7 +214,7 @@ void CRightTree::ShowTask( _TaskAttr* task )
             }
 
             tmp = AppendItem( rid,
-                              _("File Info"),
+                              _MGSTR( _S_FILEINFO ),
                               3,
                               -1,
                               new CRightTreeItemData( -2 ) );
@@ -224,7 +226,7 @@ void CRightTree::ShowTask( _TaskAttr* task )
             }
 
             tmp = AppendItem( rid,
-                              _("Progress"),
+                              _MGSTR( _S_PROGRESS ),
                               1,
                               -1,
                               new CRightTreeItemData( -3 ) );
@@ -239,7 +241,7 @@ void CRightTree::ShowTask( _TaskAttr* task )
             for ( int i = 0; i < task->nThread; i++ )
             {
                 wxString tx;
-                tx.Printf( _("Thread%d"), i + 1 );
+                tx.Printf( _MGSTR( _S_THREAD ), i + 1 );
                 tmp = AppendItem( rid, tx, 2, -1,
                                   new CRightTreeItemData( i + 1 ) );
 
@@ -295,7 +297,7 @@ void CRightTree::ShowTask( _TaskAttr* task )
         {
             wxTreeItemId rid, old, tmp;
             bool oldfind = false;
-            rid = AddRoot( _("Information"),
+            rid = AddRoot( _MGSTR( _S_INFORMATION ),
                            0,
                            -1,
                            new CRightTreeItemData( 0 ) );
@@ -306,7 +308,7 @@ void CRightTree::ShowTask( _TaskAttr* task )
                 oldfind = true;
             }
 
-            tmp = AppendItem( rid, _("Detail"),
+            tmp = AppendItem( rid, _MGSTR( _S_DETAIL ),
                               6,
                               -1,
                               new CRightTreeItemData( 20 ) );
@@ -317,7 +319,7 @@ void CRightTree::ShowTask( _TaskAttr* task )
                 oldfind = true;
             }
 
-            tmp = AppendItem( rid, _("Log"),
+            tmp = AppendItem( rid, _MGSTR( _S_LOG ),
                               5,
                               -1,
                               new CRightTreeItemData( 21 ) );

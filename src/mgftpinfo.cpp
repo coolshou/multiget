@@ -26,6 +26,7 @@
 #include <winsock2.h>
 #endif
 
+#include <stdio.h>   //sprintf()
 #include <iostream>
 #include "mgftpinfo.h"
 #include "mgsingletask.h" //for outmsg
@@ -183,12 +184,7 @@ bool CMgFtpInfo::Retry()
 }
 
 
-void CMgFtpInfo::OutMsg( const wxChar *str, _MSGTYPE type )
-{
-    OutMsg( c_str(str), type );
-}
-
-void CMgFtpInfo::OutMsg( const std::string& str, _MSGTYPE type )
+void CMgFtpInfo::OutMsg( std::string str, _MSGTYPE type )
 {
     m_pParent->OutMsg( m_nMsgId, str, type );
 }

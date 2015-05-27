@@ -71,8 +71,7 @@ protected:
     std::string m_pass;
     std::string m_file;
 
-    void OutMsg( const std::string& str, _MSGTYPE type = MSG_INFO );
-    void OutMsg( const wxChar* str, _MSGTYPE type = MSG_INFO );
+    void OutMsg( std::string str, _MSGTYPE type = MSG_INFO );
     bool GetFile( const char* filename );
     bool m_bResume;
     llong m_nFileSize;

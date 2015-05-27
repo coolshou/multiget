@@ -24,6 +24,8 @@
 
 #include "batch.h"
 #include "common.h"
+#include <stdio.h>   //sprintf()
+#include <cstdlib> //atoi()
 #include <iostream>
 
 CBatch::CBatch( std::string str )

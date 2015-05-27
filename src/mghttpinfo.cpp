@@ -40,6 +40,7 @@
 #include <unistd.h>
 #endif
 
+#define  _MGSTR(s) wxGetApp().GetStr(s)
 CMgHttpInfo::CMgHttpInfo(
     CMgSingleTask	*parent,
     std::string fullurl,
@@ -79,7 +80,7 @@ again:
 
     if ( !Connect( m_server.c_str(), m_port ) )
     {
-        OutMsg( _("Connect fail."), MSG_WARNNING );
+        OutMsg( _MGSTR ( _S_ANTS_CONNECTFAIL ), MSG_WARNNING );
 
         if ( Retry() )
         {
@@ -87,7 +88,7 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return false;
         }
     }
@@ -104,7 +105,7 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return false;
         }
 
@@ -298,7 +299,7 @@ again:
         else
         {
             m_nLastError = -203;
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return false;
         }
 
@@ -354,7 +355,7 @@ bool CMgHttpInfo::Retry()
     if ( --m_nRetry > 0 )
     {
         char buf[ 50 ];
-        sprintf( buf, c_str(_("Wait %d seconds to retry...")).c_str(), m_nRetryWait );
+        sprintf( buf, (_MGSTR ( _S_ANTS_WAITTORETRY )).c_str(), m_nRetryWait );
         OutMsg( buf, MSG_INFO );
 
         m_pParent->m_nError++;
@@ -370,12 +371,7 @@ bool CMgHttpInfo::Retry()
 }
 
 
-void CMgHttpInfo::OutMsg( const wxChar * str, _MSGTYPE type )
-{
-    OutMsg( c_str(str), type );
-}
-
-void CMgHttpInfo::OutMsg( const std::string& str, _MSGTYPE type )
+void CMgHttpInfo::OutMsg( std::string str, _MSGTYPE type )
 {
     m_pParent->OutMsg( m_nMsgId, str, type );
 }

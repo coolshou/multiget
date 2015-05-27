@@ -148,8 +148,6 @@ EVT_MENU( mgID_RELOAD, MainFrame::OnReloadFile )
 EVT_MENU( mgID_OPTION_CONFIG, MainFrame::OnConfig )
 EVT_MENU( mgID_MOVEDOWN_TASK, MainFrame::OnMoveDown )
 EVT_MENU( mgID_MOVEUP_TASK, MainFrame::OnMoveUp )
-/*2008-4-15 Disable the Language menu, Wing Sun */
-/*
 EVT_MENU( mgID_VIEW_LANG_EN_UTF8, MainFrame::OnLangEnUtf8 )
 EVT_MENU( mgID_VIEW_LANG_CN_UTF8, MainFrame::OnLangCnUtf8 )
 EVT_MENU( mgID_VIEW_LANG_GB18030, MainFrame::OnLangCn18030 )
@@ -157,7 +155,6 @@ EVT_MENU( mgID_VIEW_LANG_TW_UTF8, MainFrame::OnLangTwUtf8 )
 EVT_MENU( mgID_VIEW_LANG_TW_BIG5, MainFrame::OnLangTwBig5 )
 EVT_MENU( mgID_VIEW_LANG_DE_UTF8, MainFrame::OnLangDeUtf8 )
 EVT_MENU( mgID_VIEW_LANG_PT_UTF8, MainFrame::OnLangPtUtf8 )
-*/
 EVT_MENU( mgID_VIEW_STATUSBAR, MainFrame::OnStatusBar )
 EVT_MENU( mgID_VIEW_TOOLBAR_SIZE16, MainFrame::OnToolbarSize16 )
 EVT_MENU( mgID_VIEW_TOOLBAR_SIZE24, MainFrame::OnToolbarSize24 )
@@ -176,6 +173,7 @@ EVT_MAXIMIZE( MainFrame::OnMaximize )
 //EVT_KILL_FOCUS( MainFrame::OnLostFocus )
 END_EVENT_TABLE()
 
+#define  _MGSTR(s) wxGetApp().GetWxStr(s)
 
 extern int gRunTaskNum;
 extern int gConnectTimeOut;
@@ -219,17 +217,16 @@ void MainFrame::OnWindowCreate( wxWindowCreateEvent& event )
 
     if ( m_SysTray )
     {
-		m_SysTray->SetIcon( wxIcon( logo_22_xpm ), _("MultiGet file downloader"));
+		m_SysTray->SetIcon( wxIcon( logo_22_xpm ), _MGSTR( _S_APP_NAME ) );
 	}
 #else
 	event.Skip();
 #endif
 }
 
-MainFrame::MainFrame( const wxString& title, wxLocale& locale)
+MainFrame::MainFrame( const wxString& title )
         : wxFrame( NULL, wxID_ANY, title, wxDefaultPosition, wxSize( 800, 600 ),
-                   wxRESIZE_BORDER | wxDEFAULT_FRAME_STYLE | wxMAXIMIZE | wxFULL_REPAINT_ON_RESIZE ),
-		m_locale(locale)
+                   wxRESIZE_BORDER | wxDEFAULT_FRAME_STYLE | wxMAXIMIZE | wxFULL_REPAINT_ON_RESIZE )
 {
 
 
@@ -306,7 +303,7 @@ MainFrame::MainFrame( const wxString& title, wxLocale& locale)
 
     if ( m_SysTray )
     {
-		m_SysTray->SetIcon( wxIcon( logo_22_xpm ), _("MultiGet file downloader") );
+		m_SysTray->SetIcon( wxIcon( logo_22_xpm ), _MGSTR( _S_APP_NAME ) );
 	}
 #endif
 	
@@ -355,76 +352,74 @@ void MainFrame::InitMenuBar()
     wxMenu *helpMenu = new wxMenu;
 
     wxMenuItem *visit =
-        new wxMenuItem( helpMenu, mgID_HELP_VISITHOME, _("Visit homepage..."), _( "Visit homepage" ) );
+        new wxMenuItem( helpMenu, mgID_HELP_VISITHOME, _MGSTR( _S_MENU_HELP_VISITHOME ), wxT( "Visit homepage" ) );
     visit->SetBitmap( wxBitmap( msgsystem_16_xpm ) );
     helpMenu->Append( visit );
 	
     wxMenuItem *about =
-        new wxMenuItem( helpMenu, wxID_ABOUT, _("About\tCtrl+O"), _( "About program" ) );
+        new wxMenuItem( helpMenu, wxID_ABOUT, _MGSTR( _S_MENU_HELP_ABOUT ), wxT( "About program" ) );
     about->SetBitmap( wxBitmap( about_xpm ) );
     helpMenu->Append( about );
 
     wxMenuItem *option =
-        new wxMenuItem( setMenu, mgID_OPTION_CONFIG, _("Settings\tCtrl+S"), _( "sys setting" ) );
+        new wxMenuItem( setMenu, mgID_OPTION_CONFIG, _MGSTR( _S_MENU_OPTION_CONFIG ), wxT( "sys setting" ) );
     option->SetBitmap( wxBitmap( option_xpm ) );
     setMenu->Append( option );
 
     wxMenuItem *proxy =
-        new wxMenuItem( setMenu, mgID_OPTION_PROXY, _("Proxy Admin\tCtrl+T"), _( "proxy setting" ) );
+        new wxMenuItem( setMenu, mgID_OPTION_PROXY, _MGSTR( _S_MENU_OPTION_PROXYCONFIG ), wxT( "proxy setting" ) );
     proxy->SetBitmap( wxBitmap( proxy_xpm ) );
     setMenu->Append( proxy );
 
 	
     wxMenuItem *saveconfig =
-        new wxMenuItem( fileMenu, mgID_FILE_SAVECONFIG, _("Save Config"), _( "Save Config" ) );
+        new wxMenuItem( fileMenu, mgID_FILE_SAVECONFIG, _MGSTR( _S_MENU_FILE_SAVECONFIG ), wxT( "Save Config" ) );
     saveconfig->SetBitmap( wxBitmap( save_xpm ) );
     fileMenu->Append( saveconfig );	
 
     wxMenuItem *savetask =
-        new wxMenuItem( fileMenu, mgID_FILE_SAVETASK, _("Save task list"), _( "Save Task" ) );
+        new wxMenuItem( fileMenu, mgID_FILE_SAVETASK, _MGSTR( _S_MENU_FILE_SAVETASK ), wxT( "Save Task" ) );
     savetask->SetBitmap( wxBitmap( save_xpm ) );
     fileMenu->Append( savetask );	
 	
     wxMenuItem *saveproxy =
-        new wxMenuItem( fileMenu, mgID_FILE_SAVEPROXY, _("Save proxy list"), _( "Save Proxy" ) );
+        new wxMenuItem( fileMenu, mgID_FILE_SAVEPROXY, _MGSTR( _S_MENU_FILE_SAVEPROXY ), wxT( "Save Proxy" ) );
     saveproxy->SetBitmap( wxBitmap( save_xpm ) );
     fileMenu->Append( saveproxy );		
 
 	fileMenu->AppendSeparator();
 	
     wxMenuItem *quit =
-        new wxMenuItem( fileMenu, wxID_EXIT, _("Quit\tCtrl+Q"), _( "Quit program" ) );
+        new wxMenuItem( fileMenu, wxID_EXIT, _MGSTR( _S_MENU_FILE_QUIT ), wxT( "Quit program" ) );
     quit->SetBitmap( wxBitmap( quit_xpm ) );
     fileMenu->Append( quit );	
 	
     //view
 
-/*2008-4-15 Disable the Language menu, Wing Sun */
-/*
     wxMenu *lang = new wxMenu;
-    lang->AppendRadioItem( mgID_VIEW_LANG_EN_UTF8, _( "English UTF-8" ), _( "change to english." ) );
+    lang->AppendRadioItem( mgID_VIEW_LANG_EN_UTF8, wxT( "English UTF-8" ), wxT( "change to english." ) );
     lang->AppendSeparator();
-    lang->AppendRadioItem( mgID_VIEW_LANG_CN_UTF8, _( "Chinese UTF-8" ), _( "change to chinese" ) );
-    lang->AppendRadioItem( mgID_VIEW_LANG_GB18030, _( "Chinese GB18030/GB2312/GBK" ), _( "change to chinese" ) );
+    lang->AppendRadioItem( mgID_VIEW_LANG_CN_UTF8, wxT( "Chinese UTF-8" ), wxT( "change to chinese" ) );
+    lang->AppendRadioItem( mgID_VIEW_LANG_GB18030, wxT( "Chinese GB18030/GB2312/GBK" ), wxT( "change to chinese" ) );
     lang->AppendSeparator();
-    lang->AppendRadioItem( mgID_VIEW_LANG_TW_UTF8, _( "Chinese Traditional zh_TW UTF-8" ), _( "Change to Chinese Traditional zh_TW UTF-8" ) );
-    lang->AppendRadioItem( mgID_VIEW_LANG_TW_BIG5, _( "Chinese Traditional zh_TW BIG5" ), _( "Change to Chinese Traditional zh_TW BIG5" ) );
+    lang->AppendRadioItem( mgID_VIEW_LANG_TW_UTF8, wxT( "Taiwan UTF-8" ), wxT( "change to taiwan utf-8" ) );
+    lang->AppendRadioItem( mgID_VIEW_LANG_TW_BIG5, wxT( "Taiwan BIG5" ), wxT( "change to taiwan big5" ) );
     lang->AppendSeparator();
-    lang->AppendRadioItem( mgID_VIEW_LANG_DE_UTF8, _( "German UTF-8" ), _( "change to German" ) );
+    lang->AppendRadioItem( mgID_VIEW_LANG_DE_UTF8, wxT( "German UTF-8" ), wxT( "change to German" ) );
     lang->AppendSeparator();
-    lang->AppendRadioItem( mgID_VIEW_LANG_PT_UTF8, _( "Portuguese UTF-8" ), _( "change to Portuguese" ) );
+    lang->AppendRadioItem( mgID_VIEW_LANG_PT_UTF8, wxT( "Portuguese UTF-8" ), wxT( "change to Portuguese" ) );
 	m_lang=lang;
 	CheckLangMenu( wxGetApp().GetLang() );
 
-    viewMenu->Append( mgID_VIEW_LANG, _("Language"), lang );
+
+    viewMenu->Append( mgID_VIEW_LANG, _MGSTR( _S_MENU_VIEW_LANG ), lang );
     viewMenu->AppendSeparator();
-*/
 
     wxMenu *tool = new wxMenu;
-    tool->AppendRadioItem( mgID_VIEW_TOOLBAR_SIZE16, _("16*16 icon"), _( "size 16" ) );
-    tool->AppendRadioItem( mgID_VIEW_TOOLBAR_SIZE24, _("24*24 icon"), _( "size 24" ) );
-    tool->AppendRadioItem( mgID_VIEW_TOOLBAR_SIZE32, _("32*32 icon"), _( "size 32" ) );
-    viewMenu->Append( mgID_VIEW_TOOLBAR, _("ToolBar"), tool );
+    tool->AppendRadioItem( mgID_VIEW_TOOLBAR_SIZE16, _MGSTR( _S_MENU_VIEW_TOOLBAR_SIZE16 ), wxT( "size 16" ) );
+    tool->AppendRadioItem( mgID_VIEW_TOOLBAR_SIZE24, _MGSTR( _S_MENU_VIEW_TOOLBAR_SIZE24 ), wxT( "size 24" ) );
+    tool->AppendRadioItem( mgID_VIEW_TOOLBAR_SIZE32, _MGSTR( _S_MENU_VIEW_TOOLBAR_SIZE32 ), wxT( "size 32" ) );
+    viewMenu->Append( mgID_VIEW_TOOLBAR, _MGSTR( _S_MENU_VIEW_TOOLBAR ), tool );
 
     switch ( TOOLBAR_SIZE )
     {
@@ -442,38 +437,38 @@ void MainFrame::InitMenuBar()
         break;
     }
 
-    viewMenu->AppendCheckItem( mgID_VIEW_STATUSBAR, _("StatusBar"), _( "StatusBar" ) );
+    viewMenu->AppendCheckItem( mgID_VIEW_STATUSBAR, _MGSTR( _S_MENU_VIEW_STATUSBAR ), wxT( "statusbar" ) );
     viewMenu->Check( mgID_VIEW_STATUSBAR, m_bShowStatusBar );
 
     wxMenuItem *newtask =
-        new wxMenuItem( taskMenu, mgID_NEW_TASK, _("New\tCtrl+N"), _( "create a new task." ) );
+        new wxMenuItem( taskMenu, mgID_NEW_TASK, _MGSTR( _S_MENU_TASK_NEW ), wxT( "create a new task." ) );
     newtask->SetBitmap( wxBitmap( new_xpm ) );
     wxMenuItem *starttask =
-        new wxMenuItem( taskMenu, mgID_START_TASK, _("Start\tCtrl+G"), _( "start current task." ) );
+        new wxMenuItem( taskMenu, mgID_START_TASK, _MGSTR( _S_MENU_TASK_START ), wxT( "start current task." ) );
     starttask->SetBitmap( wxBitmap( run_xpm ) );
     wxMenuItem *pausetask =
-        new wxMenuItem( taskMenu, mgID_STOP_TASK, _("Pause\tCtrl+P"), _( "pause current task." ) );
+        new wxMenuItem( taskMenu, mgID_STOP_TASK, _MGSTR( _S_MENU_TASK_PAUSE ), wxT( "pause current task." ) );
     pausetask->SetBitmap( wxBitmap( stop_xpm ) );
     wxMenuItem *deletetask =
-        new wxMenuItem( taskMenu, mgID_CANCEL_TASK, _("Delete\tDel"), _( "delete current task." ) );
+        new wxMenuItem( taskMenu, mgID_CANCEL_TASK, _MGSTR( _S_MENU_TASK_DELETE ), wxT( "delete current task." ) );
     deletetask->SetBitmap( wxBitmap( delete_xpm ) );
 
     wxMenuItem *moveup =
-        new wxMenuItem( taskMenu, mgID_MOVEUP_TASK, _("MoveUp\tCtrl+U"), _( "moveup current task." ) );
+        new wxMenuItem( taskMenu, mgID_MOVEUP_TASK, _MGSTR( _S_MENU_TASK_MOVEUP ), wxT( "moveup current task." ) );
     moveup->SetBitmap( wxBitmap( up_xpm ) );
     wxMenuItem *movedown =
-        new wxMenuItem( taskMenu, mgID_MOVEDOWN_TASK, _("MoveDown\tCtrl+D"), _( "movedown current task." ) );
+        new wxMenuItem( taskMenu, mgID_MOVEDOWN_TASK, _MGSTR( _S_MENU_TASK_MOVEDOWN ), wxT( "movedown current task." ) );
     movedown->SetBitmap( wxBitmap( down_xpm ) );
 
     wxMenuItem *addant =
-        new wxMenuItem( taskMenu, mgID_ADDTHREAD, _("+Thread\tCtrl++"), _( "increase a working thread." ) );
+        new wxMenuItem( taskMenu, mgID_ADDTHREAD, _MGSTR( _S_MENU_TASK_ADDTHREAD ), wxT( "increase a working thread." ) );
     addant->SetBitmap( wxBitmap( plus_xpm ) );
     wxMenuItem *subant =
-        new wxMenuItem( taskMenu, mgID_SUBTHREAD, _("-Thread\tCtrl+-"), _( "decrease a working thread." ) );
+        new wxMenuItem( taskMenu, mgID_SUBTHREAD, _MGSTR( _S_MENU_TASK_SUBTHREAD ), wxT( "decrease a working thread." ) );
     subant->SetBitmap( wxBitmap( sub_xpm ) );
 
     wxMenuItem *reload =
-        new wxMenuItem( taskMenu, mgID_RELOAD, _("Redownload"), _( "redownload the task" ) );
+        new wxMenuItem( taskMenu, mgID_RELOAD, _MGSTR( _S_MENU_TASK_RELOAD ), wxT( "redownload the task" ) );
     reload->SetBitmap( wxBitmap( reload_xpm ) );
 
     taskMenu->Append( newtask );
@@ -491,11 +486,11 @@ void MainFrame::InitMenuBar()
     //root menu
     wxMenuBar* menubar = new wxMenuBar( wxMB_DOCKABLE );
     assert( menubar != NULL );
-    menubar->Append( fileMenu, _("File(&F)") );
-    menubar->Append( taskMenu, _("Task(&T)") );
-    menubar->Append( viewMenu, _("View(&V)") );
-    menubar->Append( setMenu, _("Option(&P)") );
-    menubar->Append( helpMenu, _("Help(&H)") );
+    menubar->Append( fileMenu, _MGSTR( _S_MENU_FILE ) );
+    menubar->Append( taskMenu, _MGSTR( _S_MENU_TASK ) );
+    menubar->Append( viewMenu, _MGSTR( _S_MENU_VIEW ) );
+    menubar->Append( setMenu, _MGSTR( _S_MENU_OPTION ) );
+    menubar->Append( helpMenu, _MGSTR( _S_MENU_HELP ) );
 
 	//Under Windows, a size event is generated, so be sure to initialize data members properly before calling SetMenuBar.
     SetMenuBar( menubar );
@@ -571,74 +566,74 @@ void MainFrame::InitToolBar()
 	toolbar->SetToolBitmapSize(wxSize(TOOLBAR_SIZE, TOOLBAR_SIZE));
 
     toolbar->AddTool( mgID_NEW_TASK,
-                      _("New\tCtrl+N"),
+                      _MGSTR( _S_MENU_TASK_NEW ),
                       bmpNew,
-                      _("New task") );
+                      _MGSTR( _S_TIP_NEWTASK ) );
 
     toolbar->AddTool( mgID_START_TASK,
-                      _("Start\tCtrl+G"),
+                      _MGSTR( _S_MENU_TASK_START ),
                       bmpStart,
-                      _("Run task") );
+                      _MGSTR( _S_TIP_RUNTASK ) );
 
     toolbar->AddTool( mgID_STOP_TASK,
-                      _("Pause\tCtrl+P"),
+                      _MGSTR( _S_MENU_TASK_PAUSE ),
                       bmpStop,
-                      _("Stop task") );
+                      _MGSTR( _S_TIP_STOPTASK ) );
 
     toolbar->AddTool( mgID_CANCEL_TASK,
-                      _("Delete\tDel"),
+                      _MGSTR( _S_MENU_TASK_DELETE ),
                       bmpCancel,
-                      _("Delete task") );
+                      _MGSTR( _S_TIP_DELETETASK ) );
 
     toolbar->AddSeparator();
 
     toolbar->AddTool( mgID_MOVEUP_TASK,
-                      _("MoveUp\tCtrl+U"),
+                      _MGSTR( _S_MENU_TASK_MOVEUP ),
                       bmpMoveup,
-                      _("Move up task") );
+                      _MGSTR( _S_TIP_MOVEUPTASK ) );
 
     toolbar->AddTool( mgID_MOVEDOWN_TASK,
-                      _("MoveDown\tCtrl+D"),
+                      _MGSTR( _S_MENU_TASK_MOVEDOWN ),
                       bmpMovedown,
-                      _("Move down task") );
+                      _MGSTR( _S_TIP_MOVEDOWNTASK ) );
 
     toolbar->AddSeparator();
 
     toolbar->AddTool( mgID_ADDTHREAD,
-                      _("+Thread\tCtrl++"),
+                      _MGSTR( _S_MENU_TASK_ADDTHREAD ),
                       bmpAddAnts,
-                      _("Increase a session") );
+                      _MGSTR( _S_TIP_ADDTASKTHREAD ) );
 
     toolbar->AddTool( mgID_SUBTHREAD,
-                      _("-Thread\tCtrl+-"),
+                      _MGSTR( _S_MENU_TASK_SUBTHREAD ),
                       bmpSubAnts,
-                      _("Reduce a session") );
+                      _MGSTR( _S_TIP_SUBTASKTHREAD ) );
 
     toolbar->AddSeparator();
 
     toolbar->AddTool( mgID_RELOAD,
-                      _("Redownload"),
+                      _MGSTR( _S_MENU_TASK_RELOAD ),
                       bmpReload,
-                      _("Redownload task") );
+                      _MGSTR( _S_TIP_RELOADTASK ) );
 
     toolbar->AddSeparator();
 
     toolbar->AddTool( mgID_OPTION_CONFIG,
-                      _("Settings\tCtrl+S"),
+                      _MGSTR( _S_MENU_OPTION_CONFIG ),
                       bmpOption,
-                      _("System configure") );
+                      _MGSTR( _S_TIP_SYSCONFIG ) );
 
     toolbar->AddTool( mgID_OPTION_PROXY,
-                      _("Proxy Admin\tCtrl+T"),
+                      _MGSTR( _S_MENU_OPTION_PROXYCONFIG ),
                       bmpProxy,
-                      _("Proxy Administrator") );
+                      _MGSTR( _S_TIP_PROXYADMIN ) );
 
     toolbar->AddSeparator();
 
     toolbar->AddTool( mgID_OPTION_PROPERTY,
-                      _("Properties"),
+                      _MGSTR( _S_MENU_OPTION_PROPERTY ),
                       bmpProperty,
-                      _("Show/Modify task properties") );
+                      _MGSTR( _S_TIP_PROPERTY ) );
 
     toolbar->Realize();
 
@@ -658,7 +653,7 @@ void MainFrame::InitSpliter()
 #else
 					wxSP_LIVE_UPDATE | wxSP_BORDER,
 #endif
-                    _( "ms" )
+                    wxT( "ms" )
                  );
     assert( m_vspliter != NULL );
     m_vspliter->SetMinimumPaneSize( 150 );
@@ -673,7 +668,7 @@ void MainFrame::InitSpliter()
 #else
                      wxSP_LIVE_UPDATE | wxSP_BORDER /*|wxSP_PERMIT_UNSPLIT*/,
 #endif
-                     _( "rs" )
+                     wxT( "rs" )
                  );
 
 
@@ -702,7 +697,7 @@ void MainFrame::InitSpliter()
 
 void MainFrame::OnNewTask( wxCommandEvent& event )
 {
-    DoNewTask( _( "" ) );
+    DoNewTask( wxT( "" ) );
 }
 
 void MainFrame::OnStartTask( wxCommandEvent& event )
@@ -862,7 +857,7 @@ void MainFrame::OnCancelTask( wxCommandEvent& event )
         /* comfirm
               wxString msg;
               wxString url( pcur->sURL.c_str(), wxConvLocal );
-              msg = _MGSTR(_S_MAINFRAME_DELETESELECT) + _("\n") + url;
+              msg = _MGSTR(_S_MAINFRAME_DELETESELECT) + wxT("\n") + url;
               wxMessageDialog dlg( this, msg, _MGSTR( _S_MAINFRAME_DELETEWARNNING ),
                                    wxICON_QUESTION | wxYES_NO | wxSTAY_ON_TOP | wxNO_DEFAULT );
 
@@ -1195,35 +1190,35 @@ void MainFrame::OnAbout( wxCommandEvent& event )
 /*
     wxString msg;
     msg = _MGSTR( _S_INFO_WELCOME );
-    msg += _( "\n\n" );
+    msg += wxT( "\n\n" );
     msg += _MGSTR( _S_COPYRIGHT );
-    msg += _( "\n\n" );
+    msg += wxT( "\n\n" );
     msg += _MGSTR( _S_VERSION );
-    msg += _( "\n\n" );
+    msg += wxT( "\n\n" );
     msg += _MGSTR( _S_ABOUT_BUGREPORT );
-    msg += _( "\n\n" );
+    msg += wxT( "\n\n" );
     msg += _MGSTR( _S_ABOUT_MAINPUBLISH );
-    msg += _( "\n\n" );
-	msg += _( "----------------------------------------\n");
+    msg += wxT( "\n\n" );
+	msg += wxT( "----------------------------------------\n");
 	msg += _MGSTR( _S_THANKS_CJACKER );
-    msg += _( "\n" );
+    msg += wxT( "\n" );
 	msg += _MGSTR( _S_THANKS_GUOHONGTAO );
-    msg += _( "\n" );
+    msg += wxT( "\n" );
 	msg += _MGSTR( _S_THANKS_LANGUE );
-    msg += _( "\n" );
+    msg += wxT( "\n" );
 	msg += _MGSTR( _S_THANKS_MATTHE );
-    msg += _( "\n" );
+    msg += wxT( "\n" );
 	msg += _MGSTR( _S_THANKS_ABEL );
-    msg += _( "\n" );
+    msg += wxT( "\n" );
 	msg += _MGSTR( _S_THANKS_ISJFK );
-    msg += _( "\n" );
+    msg += wxT( "\n" );
 	msg += _MGSTR( _S_THANKS_BRYAN );
-    msg += _( "\n" );	
+    msg += wxT( "\n" );	
 	msg += _MGSTR( _S_THANKS_MICHAEL_FRASE );
-    msg += _( "\n" );	
+    msg += wxT( "\n" );	
 	msg += _MGSTR( _S_THANKS_JOSE_OSWALDO );
-    msg += _( "\n" );		
-	msg += _( "----------------------------------------\n\n");
+    msg += wxT( "\n" );		
+	msg += wxT( "----------------------------------------\n\n");
 
 
     //msg += _MGSTR( _S_ABOUT_ANNOUNCE );
@@ -1235,23 +1230,23 @@ void MainFrame::OnAbout( wxCommandEvent& event )
     m_SysTray->DlgShow( false );
 */
 	wxAboutDialogInfo info;
-	info.SetName(_("multiget"));
-	info.AddDeveloper(_("liubin (multiget@gmail.com)"));
-	info.SetDescription(_("This is a multi-thread http/ftp file downloader."));
-	info.SetVersion(_("v1.2.0"));
-	info.SetLicence(_("GPLv2"));
-	info.SetWebSite(_("http://multiget.sourceforge.net"));
+	info.SetName(wxT("multiget"));
+	info.AddDeveloper(wxT("liubin (multiget@gmail.com)"));
+	info.SetDescription(wxT("This is a multi-thread http/ftp file downloader."));
+	info.SetVersion(wxT("v1.2.0"));
+	info.SetLicence(wxT("GPLv2"));
+	info.SetWebSite(wxT("http://multiget.sourceforge.net"));
 
 //sorry! I can't remember all the translators.
-	info.AddTranslator(_("Jose Oswaldo"));
-	info.AddTranslator(_("Michael Frase"));
-	info.AddTranslator(_("abel"));
+	info.AddTranslator(wxT("Jose Oswaldo"));
+	info.AddTranslator(wxT("Michael Frase"));
+	info.AddTranslator(wxT("abel"));
 
 	//wxBitmap baby(baby_xpm);
 	wxIcon bicon;
 	bicon.CopyFromBitmap(wxBitmap(baby_xpm));
 	info.SetIcon(bicon);
-	info.SetCopyright(_("liubin, China"));
+	info.SetCopyright(wxT("liubin, China"));
 	::wxAboutBox(info);
 }
 
@@ -1797,8 +1792,8 @@ void MainFrame::OnTimer( wxTimerEvent& event )
     if ( GetStatusBar() )
     {
         wxString sp;
-        sp.Printf( _( "%d KB/S" ) , TotalSpeed / 1024 );
-        GetStatusBar() ->SetStatusText( _("Speed:") + sp, 3 );
+        sp.Printf( wxT( "%d KB/S" ) , TotalSpeed / 1024 );
+        GetStatusBar() ->SetStatusText( _MGSTR( _S_STATUS_TOTALSPEED ) + sp, 3 );
     }
 
     m_MeterBar->PutSpeedData( TotalSpeed );
@@ -1821,8 +1816,8 @@ void MainFrame::OnClose( wxCloseEvent& event )
         if ( m_TaskManager->GetTaskNumber() > 0 )
         {
             wxMessageDialog * dlg = new wxMessageDialog( this,
-                                    _("There are tasks running,close window will stop all running task,QUIT?"),
-                                    _("Warnning"),
+                                    _MGSTR( _S_INFO_TASKSTILLRUNNING ),
+                                    _MGSTR( _S_INFO_WARNNING ),
                                     wxICON_QUESTION | wxYES_NO | wxSTAY_ON_TOP | wxNO_DEFAULT );
 
             m_SysTray->DlgShow( true );
@@ -1940,7 +1935,7 @@ void MainFrame::OnTaskFinish( wxCommandEvent& event )
                 if ( !MoveFile( it->sName, it->sSavePath, sRename ) )
                 {
                     m_SysTray->DlgShow( true );
-                    wxMessageBox( _("file move fail! \nfind it in /home/yourname/.MultiGet/ and move it out.") );
+                    wxMessageBox( _MGSTR( _S_INFO_FILEMOVEFAIL ) );
                     m_SysTray->DlgShow( false );
                 }
 
@@ -1956,7 +1951,7 @@ void MainFrame::OnTaskFinish( wxCommandEvent& event )
 
                 PlaySound( true );
                 //notice finish
-                m_MeterBar->SetTip( c_str(_("Task Finish:")) + it->sName );
+                m_MeterBar->SetTip( wxGetApp().GetStr( _S_INFO_TASKFINISH ) + it->sName );
 
                 if ( it->bAutoMd5 && gbAutoMd5 )
                     FileMd5( *it );
@@ -1995,7 +1990,7 @@ void MainFrame::OnTaskFinish( wxCommandEvent& event )
 
                 PlaySound( false );
                 //notice
-                m_MeterBar->SetTip( c_str(_("Task Fail:")) + it->sName );
+                m_MeterBar->SetTip( wxGetApp().GetStr( _S_INFO_TASKFAIL ) + it->sName );
                 break;
             }
             else
@@ -2681,7 +2676,7 @@ void MainFrame::OnDropURL( wxString url )
     if ( !upar.SetUrl( string( url.mb_str( wxConvLocal ) ) ) )  //?????
     {
         m_SysTray->DlgShow( true );
-        wxMessageBox( _("Not a supported url file address") );
+        wxMessageBox( _MGSTR( _S_INFO_NOTSUPPORTURL ) );
         m_SysTray->DlgShow( false );
         return ;
     }
@@ -2770,8 +2765,7 @@ void MainFrame::SwitchShowDropWin()
     }
 	return;
 }
-/*2008-4-15 Disable the Language menu, Wing Sun */
-/*
+
 void MainFrame::OnLangEnUtf8( wxCommandEvent& )
 {
 	if( CheckLocale ( EN_US_UTF_8 ) )
@@ -2869,7 +2863,6 @@ void MainFrame::OnLangPtUtf8( wxCommandEvent& )
 		NoLangSupport();
 	}
 }
-
 void MainFrame::UpdateMenuText()
 {
     wxMenuBar * menubar = GetMenuBar();
@@ -2878,67 +2871,67 @@ void MainFrame::UpdateMenuText()
         return ;
 
     //update root
-    menubar->SetLabelTop( 0, _("File(&F)") );
+    menubar->SetLabelTop( 0, _MGSTR( _S_MENU_FILE ) );
 
-    menubar->SetLabelTop( 1, _("Task(&T)") );
+    menubar->SetLabelTop( 1, _MGSTR( _S_MENU_TASK ) );
 
-    menubar->SetLabelTop( 2, _("View(&V)") );
+    menubar->SetLabelTop( 2, _MGSTR( _S_MENU_VIEW ) );
 
-    menubar->SetLabelTop( 3, _("Option(&P)") );
+    menubar->SetLabelTop( 3, _MGSTR( _S_MENU_OPTION ) );
 
-    menubar->SetLabelTop( 4, _("Help(&H)") );
+    menubar->SetLabelTop( 4, _MGSTR( _S_MENU_HELP ) );
 
     //update other
     //file
-    menubar->SetLabel( wxID_EXIT, _("Quit\tCtrl+Q") );
+    menubar->SetLabel( wxID_EXIT, _MGSTR( _S_MENU_FILE_QUIT ) );
 	
-	menubar->SetLabel( mgID_FILE_SAVECONFIG, _("Save Config") );
+	menubar->SetLabel( mgID_FILE_SAVECONFIG, _MGSTR( _S_MENU_FILE_SAVECONFIG ) );
 	
-	menubar->SetLabel( mgID_FILE_SAVEPROXY, _("Save proxy list") );
+	menubar->SetLabel( mgID_FILE_SAVEPROXY, _MGSTR( _S_MENU_FILE_SAVEPROXY ) );
 	
-	menubar->SetLabel( mgID_FILE_SAVETASK, _("Save task list") );
+	menubar->SetLabel( mgID_FILE_SAVETASK, _MGSTR( _S_MENU_FILE_SAVETASK ) );
 
     //task
-    menubar->SetLabel( mgID_NEW_TASK, _("New\tCtrl+N") );
+    menubar->SetLabel( mgID_NEW_TASK, _MGSTR( _S_MENU_TASK_NEW ) );
 
-    menubar->SetLabel( mgID_START_TASK, _("Start\tCtrl+G") );
+    menubar->SetLabel( mgID_START_TASK, _MGSTR( _S_MENU_TASK_START ) );
 
-    menubar->SetLabel( mgID_STOP_TASK, _("Pause\tCtrl+P") );
+    menubar->SetLabel( mgID_STOP_TASK, _MGSTR( _S_MENU_TASK_PAUSE ) );
 
-    menubar->SetLabel( mgID_CANCEL_TASK, _("Delete\tDel") );
+    menubar->SetLabel( mgID_CANCEL_TASK, _MGSTR( _S_MENU_TASK_DELETE ) );
 
-    menubar->SetLabel( mgID_MOVEUP_TASK, _("MoveUp\tCtrl+U") );
+    menubar->SetLabel( mgID_MOVEUP_TASK, _MGSTR( _S_MENU_TASK_MOVEUP ) );
 
-    menubar->SetLabel( mgID_MOVEDOWN_TASK, _("MoveDown\tCtrl+D") );
+    menubar->SetLabel( mgID_MOVEDOWN_TASK, _MGSTR( _S_MENU_TASK_MOVEDOWN ) );
 
-    menubar->SetLabel( mgID_ADDTHREAD, _("+Thread\tCtrl++") );
+    menubar->SetLabel( mgID_ADDTHREAD, _MGSTR( _S_MENU_TASK_ADDTHREAD ) );
 
-    menubar->SetLabel( mgID_SUBTHREAD, _("-Thread\tCtrl+-") );
+    menubar->SetLabel( mgID_SUBTHREAD, _MGSTR( _S_MENU_TASK_SUBTHREAD ) );
 
-    menubar->SetLabel( mgID_RELOAD, _("Redownload") );
+    menubar->SetLabel( mgID_RELOAD, _MGSTR( _S_MENU_TASK_RELOAD ) );
 
     //view
-    menubar->SetLabel( mgID_VIEW_LANG, _("Language") );
+    menubar->SetLabel( mgID_VIEW_LANG, _MGSTR( _S_MENU_VIEW_LANG ) );
 
-    menubar->SetLabel( mgID_VIEW_TOOLBAR, _("ToolBar") );
+    menubar->SetLabel( mgID_VIEW_TOOLBAR, _MGSTR( _S_MENU_VIEW_TOOLBAR ) );
 
-    menubar->SetLabel( mgID_VIEW_TOOLBAR_SIZE16, _("16*16 icon") );
+    menubar->SetLabel( mgID_VIEW_TOOLBAR_SIZE16, _MGSTR( _S_MENU_VIEW_TOOLBAR_SIZE16 ) );
 
-    menubar->SetLabel( mgID_VIEW_TOOLBAR_SIZE24, _("24*24 icon") );
+    menubar->SetLabel( mgID_VIEW_TOOLBAR_SIZE24, _MGSTR( _S_MENU_VIEW_TOOLBAR_SIZE24 ) );
 
-    menubar->SetLabel( mgID_VIEW_TOOLBAR_SIZE32, _("32*32 icon") );
+    menubar->SetLabel( mgID_VIEW_TOOLBAR_SIZE32, _MGSTR( _S_MENU_VIEW_TOOLBAR_SIZE32 ) );
 
-    menubar->SetLabel( mgID_VIEW_STATUSBAR, _("StatusBar") );
+    menubar->SetLabel( mgID_VIEW_STATUSBAR, _MGSTR( _S_MENU_VIEW_STATUSBAR ) );
 
     //Setting
-    menubar->SetLabel( mgID_OPTION_CONFIG, _("Settings\tCtrl+S") );
+    menubar->SetLabel( mgID_OPTION_CONFIG, _MGSTR( _S_MENU_OPTION_CONFIG ) );
 
-    menubar->SetLabel( mgID_OPTION_PROXY, _("Proxy Admin\tCtrl+T") );
+    menubar->SetLabel( mgID_OPTION_PROXY, _MGSTR( _S_MENU_OPTION_PROXYCONFIG ) );
 
     //help
-	menubar->SetLabel( mgID_HELP_VISITHOME, _("Visit homepage...") );
+	menubar->SetLabel( mgID_HELP_VISITHOME, _MGSTR( _S_MENU_HELP_VISITHOME ) );
 	
-    menubar->SetLabel( wxID_ABOUT, _("About\tCtrl+O") );
+    menubar->SetLabel( wxID_ABOUT, _MGSTR( _S_MENU_HELP_ABOUT ) );
 }
 
 void MainFrame::UpdateToolText()
@@ -2949,16 +2942,16 @@ void MainFrame::UpdateToolText()
 
 void MainFrame::DynamicLang()
 {
-    SetTitle( _("MultiGet file downloader") );
+    SetTitle( _MGSTR( _S_APP_NAME ) );
     UpdateMenuText();
     UpdateToolText();
 	UpdateStatusBar();
     m_tasklist->DynamicLang();
     m_lefttree->DynamicLang();
     m_vsubspliter->DynamicLang();
-    m_SysTray->SetIcon( wxIcon( logo_22_xpm ), _("MultiGet file downloader") );
+    m_SysTray->SetIcon( wxIcon( logo_22_xpm ), _MGSTR( _S_APP_NAME ) );
 }
-*/
+
 //the only new task dlg
 void MainFrame::DoNewTask( wxString url, wxString refer, wxString savepath, wxString savefile )
 {
@@ -3183,8 +3176,8 @@ void MainFrame::DoNewTask( wxString url, wxString refer, wxString savepath, wxSt
                 m_NewTaskDlg = NULL;
                 m_SysTray->DlgShow( true );
 
-                wxMessageBox( _("Not a supported url file address"),
-                              _("Wrong"), wxICON_INFORMATION );
+                wxMessageBox( _MGSTR( _S_INFO_NOTSUPPORTURL ),
+                              _MGSTR( _S_WRONG ), wxICON_INFORMATION );
                 m_SysTray->DlgShow( false );
 
                 return ;
@@ -3257,7 +3250,7 @@ void MainFrame::OnStatusBar( wxCommandEvent& event )
         wxStatusBar* bar = new wxStatusBar( this, wxID_ANY );
         int statusw[ 5 ] = { -1, 100, 100, 140 };
         bar->SetFieldsCount( 5, statusw );
-        bar->SetStatusText( _("Welcome to use MultiGet file downloader!"), 0 );
+        bar->SetStatusText( _MGSTR( _S_INFO_WELCOME ), 0 );
         SetStatusBar( bar );
         m_bShowStatusBar = true;
     }
@@ -3284,10 +3277,10 @@ void MainFrame::UpdateStatusBar()
         }
 
         wxString num;
-        num.Printf( _( "%d" ), nrun );
-        GetStatusBar() ->SetStatusText( _("Running:") + num, 1 );
-        num.Printf( _( "%d" ), nwait );
-        GetStatusBar() ->SetStatusText( _("Waiting:") + num, 2 );
+        num.Printf( wxT( "%d" ), nrun );
+        GetStatusBar() ->SetStatusText( _MGSTR( _S_STATUS_RUNNINGTASK ) + num, 1 );
+        num.Printf( wxT( "%d" ), nwait );
+        GetStatusBar() ->SetStatusText( _MGSTR( _S_STATUS_WAITINGTASK ) + num, 2 );
 
     }
 }
@@ -3299,7 +3292,7 @@ void MainFrame::InitStatusBar()
         wxStatusBar * bar = new wxStatusBar( this, wxID_ANY );
         int statusw[ 5 ] = { -1, 100, 100, 140 };
         bar->SetFieldsCount( 5, statusw );
-        bar->SetStatusText( _("Welcome to use MultiGet file downloader!" ), 0 );
+        bar->SetStatusText( _MGSTR( _S_INFO_WELCOME ), 0 );
         SetStatusBar( bar );
     }
 }
@@ -4426,9 +4419,9 @@ void MainFrame::OnReloadFile( wxCommandEvent& event )
 
     wxString url( pcur->sURL.c_str(), wxConvLocal );
 
-    msg = wxString(_("Redownload will delete old first:")) + _( "\n" ) + url;
+    msg = _MGSTR( _S_MAINFRAME_RELOADDELETE ) + wxT( "\n" ) + url;
 
-    wxMessageDialog dlg( this, msg, _("delete old?"),
+    wxMessageDialog dlg( this, msg, _MGSTR( _S_MAINFRAME_RELOADWARNNING ),
                          wxICON_QUESTION | wxYES_NO | wxSTAY_ON_TOP | wxNO_DEFAULT );
 
     if ( wxID_NO == dlg.ShowModal() )
@@ -4593,11 +4586,11 @@ void MainFrame::OnCmdNotice( wxCommandEvent& event )
         {
             cout << group[ i ] << endl;
 
-            if ( group[ i ].Left( 4 ) == _( "url=" ) )
+            if ( group[ i ].Left( 4 ) == wxT( "url=" ) )
             {
                 url = ( group[ i ].Right( group[ i ].Length() - 4 ) );
             }
-            else if ( group[ i ].Left( 6 ) == _( "refer=" ) )
+            else if ( group[ i ].Left( 6 ) == wxT( "refer=" ) )
             {
                 refer = ( group[ i ].Right( group[ i ].Length() - 6 ) );
             }
@@ -4762,8 +4755,6 @@ void MainFrame::AddBatchTask(
         return ;
     }
 }
-/*2008-4-15 Disable the Language menu, Wing Sun */
-/*
 
 bool MainFrame::CheckLocale(_MGLANG lang)
 {
@@ -4920,13 +4911,13 @@ void MainFrame::NoLangSupport()
 {
 	m_SysTray->DlgShow( true );
 	wxMessageDialog dlg(this, 
-					wxString(_("Your system not supports this locale/language, please install language package.")),
-					wxString(_("Error!")),
+					wxString(wxT("Your system not supports this locale/language, please install language package.")),
+					wxString(wxT("Error!")),
 					wxOK|wxICON_ERROR|wxSTAY_ON_TOP);
 	dlg.ShowModal();
 	m_SysTray->DlgShow( false );
 }
-*/
+
 void MainFrame::OnSaveConfig(wxCommandEvent& event)
 {
     SaveConfig();		
@@ -4945,7 +4936,7 @@ void MainFrame::OnSaveTask(wxCommandEvent& event)
 void MainFrame::OnVisitHome(wxCommandEvent& event)
 {
 
-	::wxLaunchDefaultBrowser(_("http://multiget.sourceforge.net"),wxBROWSER_NEW_WINDOW);
+	::wxLaunchDefaultBrowser(wxT("http://multiget.sourceforge.net"),wxBROWSER_NEW_WINDOW);
 
 
 }

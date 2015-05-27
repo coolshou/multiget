@@ -28,8 +28,8 @@
 #include "common.h"
 #include <wx/dialog.h> 
 #include <wx/dir.h>
-#include <wx/wx.h>
 #include <locale.h>
+#include <stdio.h>   //sprintf()
 //#include <iostream>
 
 //using namespace std;
@@ -129,14 +129,6 @@ bool MgApp::OnInit()
 #ifdef WIN32
     m_MultiString.SetLang( EN_US_UTF_8 );
 #else
-#ifndef OLD_CODE
-	//initialize localization object for applicatoin..
-    m_locale.Init(wxLANGUAGE_DEFAULT, wxLOCALE_CONV_ENCODING); 
-	//Add localization catalog file lookup directory .
-	wxLocale::AddCatalogLookupPathPrefix(wxT(PACKAGE_LOCALE_DIR));
-	//set localization catalog file name.
-    m_locale.AddCatalog(wxT(GETTEXT_PACKAGE));
-#else
     //char* lang = getenv( "LANG" );
     char *lang;
     lang = setlocale (LC_ALL, NULL);
@@ -180,11 +172,10 @@ bool MgApp::OnInit()
         m_MultiString.SetLang( EN_US_UTF_8 );
     }
 
-#endif
 
 #endif
 	
-    SetAppName( _("MultiGet file downloader") );
+    SetAppName( GetWxStr( _S_APP_NAME ) );
 
 #ifdef __WXGTK__
 
@@ -193,7 +184,7 @@ bool MgApp::OnInit()
 #endif
 
 	
-    m_frame = new MainFrame( _("MultiGet file downloader"),m_locale);
+    m_frame = new MainFrame( GetWxStr( _S_APP_NAME ) );
 	
     assert( m_frame != NULL );
 
@@ -239,7 +230,7 @@ bool MgApp::OnInit()
 
 void MgApp::OnFatalException()
 {
-    wxMessageBox( _( "Fatal Exception! QUIT!" ) );
+    wxMessageBox( wxT( "Fatal Exception! QUIT!" ) );
 }
 
 int MgApp::OnExit()
@@ -252,7 +243,7 @@ int MgApp::OnExit()
 
     return 0;
 }
-/*
+
 void MgApp::SetLang( _MGLANG lang )
 {
     m_MultiString.SetLang( lang );
@@ -272,7 +263,7 @@ wxString MgApp::GetWxStr( _MGSTRID id )
 {
     return m_MultiString.GetWxStr( id );
 };
-*/
+
 void MgApp::CheckTempDir()
 {
     std::string tmpdir;

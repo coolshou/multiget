@@ -87,8 +87,7 @@ protected:
     std::string m_refer;
     std::string m_file;
 
-    void OutMsg( const std::string& str, _MSGTYPE type = MSG_INFO );
-    void OutMsg( const wxChar* str, _MSGTYPE type = MSG_INFO );
+    void OutMsg( std::string str, _MSGTYPE type = MSG_INFO );
     bool GetInfoByGet();
     bool m_bResume;
     llong m_nFileSize;

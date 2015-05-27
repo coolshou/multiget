@@ -80,13 +80,13 @@ CLeftTree::CLeftTree( wxWindow* parent )
     AssignImageList( leftimlist );
 
     CLeftTreeItemData *idata;
-    m_rid = AddRoot( _( "MultiGet" ), 0 );
+    m_rid = AddRoot( wxT( "MultiGet" ), 0 );
 	SetItemBold ( m_rid, true );
-    m_dl = AppendItem( m_rid, _("Running"), 1 );
-    m_pu = AppendItem( m_rid, _("Pause"), 2 );
-    m_er = AppendItem( m_rid, _("Failed"), 3 );
-    m_fi = AppendItem( m_rid, _("Finish"), 4 );
-    m_de = AppendItem( m_rid, _("Trash"), 13 ); //
+    m_dl = AppendItem( m_rid, wxGetApp().GetWxStr( _S_RUNNINGTASK ), 1 );
+    m_pu = AppendItem( m_rid, wxGetApp().GetWxStr( _S_PAUSETASK ), 2 );
+    m_er = AppendItem( m_rid, wxGetApp().GetWxStr( _S_FAILEDTASK ), 3 );
+    m_fi = AppendItem( m_rid, wxGetApp().GetWxStr( _S_FINISHTASK ), 4 );
+    m_de = AppendItem( m_rid, wxGetApp().GetWxStr( _S_DELETED ), 13 ); //
 
 
     idata = new CLeftTreeItemData;
@@ -110,42 +110,42 @@ CLeftTree::CLeftTree( wxWindow* parent )
 
 
 
-    m_fi_soft = AppendItem( m_fi, _("Software"), 5 ); //exe,bin
+    m_fi_soft = AppendItem( m_fi, wxGetApp().GetWxStr( _S_SOFTWARE ), 5 ); //exe,bin
     idata = new CLeftTreeItemData;
     idata->SetData( _STATUS_FINISH_SOFT );
     SetItemData( m_fi_soft, idata );
 
-    m_fi_packet = AppendItem( m_fi, _("Package"), 6 ); //rar,zip,gzip,tar,bz2
+    m_fi_packet = AppendItem( m_fi, wxGetApp().GetWxStr( _S_PACKET ), 6 ); //rar,zip,gzip,tar,bz2
     idata = new CLeftTreeItemData;
     idata->SetData( _STATUS_FINISH_PACK );
     SetItemData( m_fi_packet, idata );
 
-    m_fi_music = AppendItem( m_fi, _("Music"), 7 ); //mp3,wav
+    m_fi_music = AppendItem( m_fi, wxGetApp().GetWxStr( _S_MUSIC ), 7 ); //mp3,wav
     idata = new CLeftTreeItemData;
     idata->SetData( _STATUS_FINISH_MUSIC );
     SetItemData( m_fi_music, idata );
 
-    m_fi_image = AppendItem( m_fi, _("Images"), 8 ); //iso
+    m_fi_image = AppendItem( m_fi, wxGetApp().GetWxStr( _S_IMAGE ), 8 ); //iso
     idata = new CLeftTreeItemData;
     idata->SetData( _STATUS_FINISH_ISO );
     SetItemData( m_fi_image, idata );
 
-    m_fi_movie = AppendItem( m_fi, _("Movies"), 9 ); //rmvb,avi,mpg
+    m_fi_movie = AppendItem( m_fi, wxGetApp().GetWxStr( _S_MOVIE ), 9 ); //rmvb,avi,mpg
     idata = new CLeftTreeItemData;
     idata->SetData( _STATUS_FINISH_MOVIE );
     SetItemData( m_fi_movie, idata );
 
-    m_fi_publish = AppendItem( m_fi, _("Publish"), 10 ); //pdf,chm,ppt,doc,odp
+    m_fi_publish = AppendItem( m_fi, wxGetApp().GetWxStr( _S_PUBLISH ), 10 ); //pdf,chm,ppt,doc,odp
     idata = new CLeftTreeItemData;
     idata->SetData( _STATUS_FINISH_PUBLISH );
     SetItemData( m_fi_publish, idata );
 
-    m_fi_picture = AppendItem( m_fi, _("Pictures"), 11 ); //jpg,gif,tiff,png
+    m_fi_picture = AppendItem( m_fi, wxGetApp().GetWxStr( _S_PICTURE ), 11 ); //jpg,gif,tiff,png
     idata = new CLeftTreeItemData;
     idata->SetData( _STATUS_FINISH_PICTURE );
     SetItemData( m_fi_picture, idata );
 
-    m_fi_unknow = AppendItem( m_fi, _("Unknown"), 12 ); //jpg,gif,tiff,png
+    m_fi_unknow = AppendItem( m_fi, wxGetApp().GetWxStr( _S_UNKNOW ), 12 ); //jpg,gif,tiff,png
     idata = new CLeftTreeItemData;
     idata->SetData( _STATUS_FINISH_UNKNOW );
     SetItemData( m_fi_unknow, idata );
@@ -167,20 +167,20 @@ void CLeftTree::OnSelectChanged( wxTreeEvent& event )
 void CLeftTree::DynamicLang()
 {
 
-    SetItemText( m_dl, _("Running") );
-    SetItemText( m_pu, _("Pause") );
-    SetItemText( m_er, _("Failed") );
-    SetItemText( m_fi, _("Finish") );
-    SetItemText( m_de, _("Trash") );
+    SetItemText( m_dl, wxGetApp().GetWxStr( _S_RUNNINGTASK ) );
+    SetItemText( m_pu, wxGetApp().GetWxStr( _S_PAUSETASK ) );
+    SetItemText( m_er, wxGetApp().GetWxStr( _S_FAILEDTASK ) );
+    SetItemText( m_fi, wxGetApp().GetWxStr( _S_FINISHTASK ) );
+    SetItemText( m_de, wxGetApp().GetWxStr( _S_DELETED ) );
 
-    SetItemText( m_fi_soft, _("Software") );
-    SetItemText( m_fi_packet, _("Package") );
-    SetItemText( m_fi_music, _("Music" ) );
-    SetItemText( m_fi_image, _("Images") );
-    SetItemText( m_fi_movie, _("Movies" ) );
-    SetItemText( m_fi_publish, _("Publish") );
-    SetItemText( m_fi_picture, _("Pictures") );
-    SetItemText( m_fi_unknow, _("Unknown") );
+    SetItemText( m_fi_soft, wxGetApp().GetWxStr( _S_SOFTWARE ) );
+    SetItemText( m_fi_packet, wxGetApp().GetWxStr( _S_PACKET ) );
+    SetItemText( m_fi_music, wxGetApp().GetWxStr( _S_MUSIC ) );
+    SetItemText( m_fi_image, wxGetApp().GetWxStr( _S_IMAGE ) );
+    SetItemText( m_fi_movie, wxGetApp().GetWxStr( _S_MOVIE ) );
+    SetItemText( m_fi_publish, wxGetApp().GetWxStr( _S_PUBLISH ) );
+    SetItemText( m_fi_picture, wxGetApp().GetWxStr( _S_PICTURE ) );
+    SetItemText( m_fi_unknow, wxGetApp().GetWxStr( _S_UNKNOW ) );
 
 
 }

@@ -112,8 +112,7 @@ public:
     void UpdateThreadInfo( CThreadInfoWindow* pwin, int nthreadid );
     void CloseUpdateUI();
 
-    void OutMsg( int nth, const std::string& str, _MSGTYPE type = MSG_INFO );
-    void OutMsg( int nth, const wxChar *str, _MSGTYPE type = MSG_INFO );
+    void OutMsg( int nth, std::string str, _MSGTYPE type = MSG_INFO );
     //working thread call it to quit
     void ThreadQuit( int threadnum );
     void GetRunningArgs( float& fratio, llong& finish, int& speed, int& ttf );

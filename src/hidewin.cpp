@@ -45,9 +45,9 @@ extern std::string gsMonitorExt;
 extern std::string gsIgnoreExt;
 
 CHideWin::CHideWin( MainFrame *parent )
-        : wxFrame( NULL, wxID_ANY, _( "" ) )
+        : wxFrame( NULL, wxID_ANY, wxT( "" ) )
 {
-    m_LastClip = _( "" );
+    m_LastClip = wxT( "" );
     m_bMonitor = true;
     m_pParent = parent;
 

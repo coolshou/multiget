@@ -82,8 +82,7 @@ private:
     bool GetHead( );
     int WriteData( llong offset, int len, unsigned char *buf, bool end = false );
 
-    virtual void OutMsg( const std::string& str, _MSGTYPE type = MSG_INFO );
-	virtual void OutMsg( const wxChar * str, _MSGTYPE type = MSG_INFO );
+    virtual void OutMsg( std::string str, _MSGTYPE type = MSG_INFO );
     bool Retry() ;
 
     std::string m_sUrl;

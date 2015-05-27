@@ -53,8 +53,7 @@ public:
 
 
     int GetBufLine( char *buf, int maxpos, char *line );
-    virtual void OutMsg( const std::string& str, _MSGTYPE type ) = 0;
-    virtual void OutMsg( const wxChar* str, _MSGTYPE type ) = 0;
+    virtual void OutMsg( std::string str, _MSGTYPE type ) = 0;
 
     int GetCookieNum()
     {

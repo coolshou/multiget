@@ -76,8 +76,7 @@ protected:
 
     //  unsigned char m_buffer[ RECVBUF ];
     //消息类型定义0：错误消息，1：发出的信息，2：接收的信息，3：提示信息
-    void OutMsg( const std::string& str, _MSGTYPE type = MSG_INFO ); //输出消息
-	void OutMsg( const wxChar* str, _MSGTYPE type = MSG_INFO );
+    void OutMsg( std::string str, _MSGTYPE type = MSG_INFO ); //输出消息
 
     void ThreadQuit();
 

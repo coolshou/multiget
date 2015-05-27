@@ -244,14 +244,14 @@ void CMeterCtrl::OnMouseRightUp( wxMouseEvent& event )
 {
     wxPoint pos = GetPosition();
     //menu begin
-    wxMenu *rootPopMenu = new wxMenu( _("TOP SPEED") );
+    wxMenu *rootPopMenu = new wxMenu( wxGetApp().GetWxStr( _S_METER_TOPSPEED ) );
 
-    wxMenuItem* _30K = rootPopMenu->AppendCheckItem( wxID_30K, _( "30K/S" ) );
-    wxMenuItem* _90K = rootPopMenu->AppendCheckItem( wxID_90K, _( "90K/S" ) );
-    wxMenuItem* _300K = rootPopMenu->AppendCheckItem( wxID_300K, _( "300K/S" ) );
-    wxMenuItem* _900K = rootPopMenu->AppendCheckItem( wxID_900K, _( "900/S" ) );
-    wxMenuItem* _3M = rootPopMenu->AppendCheckItem( wxID_3M, _( "3M/S" ) );
-    wxMenuItem* _9M = rootPopMenu->AppendCheckItem( wxID_9M, _( "9M/S" ) );
+    wxMenuItem* _30K = rootPopMenu->AppendCheckItem( wxID_30K, wxT( "30K/S" ) );
+    wxMenuItem* _90K = rootPopMenu->AppendCheckItem( wxID_90K, wxT( "90K/S" ) );
+    wxMenuItem* _300K = rootPopMenu->AppendCheckItem( wxID_300K, wxT( "300K/S" ) );
+    wxMenuItem* _900K = rootPopMenu->AppendCheckItem( wxID_900K, wxT( "900/S" ) );
+    wxMenuItem* _3M = rootPopMenu->AppendCheckItem( wxID_3M, wxT( "3M/S" ) );
+    wxMenuItem* _9M = rootPopMenu->AppendCheckItem( wxID_9M, wxT( "9M/S" ) );
 
     switch ( m_nMaxSpeed )
     {

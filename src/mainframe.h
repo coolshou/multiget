@@ -51,8 +51,6 @@ DECLARE_EVENT_TYPE( mgID_OPTION_CONFIG, -1 )
 DECLARE_EVENT_TYPE( mgID_SUBTHREAD, -1 );
 DECLARE_EVENT_TYPE( mgID_ADDTHREAD, -1 );
 DECLARE_EVENT_TYPE( mgID_RELOAD, -1 );
-/*2008-4-15 Disable the Language menu, Wing Sun */
-/*
 DECLARE_EVENT_TYPE( mgID_VIEW_LANG, -1 )
 DECLARE_EVENT_TYPE( mgID_VIEW_LANG_EN_UTF8, -1 )
 DECLARE_EVENT_TYPE( mgID_VIEW_LANG_CN_UTF8, -1 )
@@ -61,7 +59,7 @@ DECLARE_EVENT_TYPE( mgID_VIEW_LANG_TW_BIG5, -1 )
 DECLARE_EVENT_TYPE( mgID_VIEW_LANG_TW_UTF8, -1 )
 DECLARE_EVENT_TYPE( mgID_VIEW_LANG_DE_UTF8, -1 )
 DECLARE_EVENT_TYPE( mgID_VIEW_LANG_PT_UTF8, -1 )
-*/
+
 DECLARE_EVENT_TYPE( mgID_VIEW_TOOLBAR, -1 );
 DECLARE_EVENT_TYPE( mgID_VIEW_TOOLBAR_SIZE16, -1 )
 DECLARE_EVENT_TYPE( mgID_VIEW_TOOLBAR_SIZE24, -1 )
@@ -122,7 +120,7 @@ class MainFrame : public wxFrame
 
 public:
     // Constructor
-    MainFrame(const wxString& title, wxLocale& m_locale);
+    MainFrame( const wxString& title );
     virtual ~MainFrame();
 
     void OnSelectTask( int taskid );
@@ -174,8 +172,6 @@ protected:
     void OnMoveUp( wxCommandEvent& event );
     void OnReloadFile( wxCommandEvent& event );
     void OnWindowCreate( wxWindowCreateEvent& event );
-/*2008-4-15 Disable the Language menu, Wing Sun */
-/*
     void OnLangEnUtf8( wxCommandEvent& );
     void OnLangCnUtf8( wxCommandEvent& );
     void OnLangCn18030( wxCommandEvent& );
@@ -184,11 +180,10 @@ protected:
     void OnLangDeUtf8(wxCommandEvent& );
 	void OnLangPtUtf8( wxCommandEvent& );
     void UpdateMenuText();
-    void DynamicLang();
-*/
+    void OnIconize( wxIconizeEvent& event );
     void UpdateTaskList();
     void UpdateRightDown();
-    void OnIconize( wxIconizeEvent& event );
+    void DynamicLang();
     void ScheduleTask();
     void OnStatusBar( wxCommandEvent& event );
     void OnToolbarSize16( wxCommandEvent& );
@@ -250,12 +245,9 @@ private:
     void InitMenuBar();
     void InitSpliter();
     void InitMeterBar();
-/*2008-4-15 Disable the Language menu, Wing Sun */
-/*
 	bool CheckLocale(_MGLANG lang);
 	void CheckLangMenu(_MGLANG lang);
 	void NoLangSupport();
-*/
     //void CheckTempDir();
     void DoNewTask( wxString url, wxString refer = wxT( "" ), wxString savepath = wxT( "" ), wxString savefile = wxT( "" ) );
 
@@ -309,7 +301,6 @@ private:
     pthread_mutex_t m_TaskMutex;
 
     DECLARE_EVENT_TABLE()
-	wxLocale& m_locale; //Localization object.
 
 };
 

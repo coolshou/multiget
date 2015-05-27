@@ -165,18 +165,18 @@ void CShowTableWindow::OnMouseEvent( wxMouseEvent& event )
 {
     wxPoint pos = GetPosition();
     // 菜单开始
-    wxMenu *rootPopMenu = new wxMenu( _( "Block Size" ) );
+    wxMenu *rootPopMenu = new wxMenu( wxT( "Block Size" ) );
 
-    rootPopMenu->AppendCheckItem( mgID_8K, _( "8K/Block" ) );
-    rootPopMenu->AppendCheckItem( mgID_16K, _( "16K/Block" ) );
-    rootPopMenu->AppendCheckItem( mgID_32K, _( "32K/Block" ) );
-    rootPopMenu->AppendCheckItem( mgID_64K, _( "64K/Block" ) );
-    rootPopMenu->AppendCheckItem( mgID_128K, _( "128K/Block" ) );
-    rootPopMenu->AppendCheckItem( mgID_256K, _( "256K/Block" ) );
-    rootPopMenu->AppendCheckItem( mgID_512K, _( "512K/Block" ) );
-    rootPopMenu->AppendCheckItem( mgID_1M, _( "1M/Block" ) );
-    rootPopMenu->AppendCheckItem( mgID_2M, _( "2M/Block" ) );
-    rootPopMenu->AppendCheckItem( mgID_4M, _( "4M/Block" ) );
+    rootPopMenu->AppendCheckItem( mgID_8K, wxT( "8K/Block" ) );
+    rootPopMenu->AppendCheckItem( mgID_16K, wxT( "16K/Block" ) );
+    rootPopMenu->AppendCheckItem( mgID_32K, wxT( "32K/Block" ) );
+    rootPopMenu->AppendCheckItem( mgID_64K, wxT( "64K/Block" ) );
+    rootPopMenu->AppendCheckItem( mgID_128K, wxT( "128K/Block" ) );
+    rootPopMenu->AppendCheckItem( mgID_256K, wxT( "256K/Block" ) );
+    rootPopMenu->AppendCheckItem( mgID_512K, wxT( "512K/Block" ) );
+    rootPopMenu->AppendCheckItem( mgID_1M, wxT( "1M/Block" ) );
+    rootPopMenu->AppendCheckItem( mgID_2M, wxT( "2M/Block" ) );
+    rootPopMenu->AppendCheckItem( mgID_4M, wxT( "4M/Block" ) );
 
 
     switch ( m_unit )

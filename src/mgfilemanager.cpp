@@ -82,8 +82,11 @@
 const static int _RECVBUF=16384;  //seems lost the define in common.h in win32
 #endif
 
+#define  _MGSTR(s) wxGetApp().GetStr(s)
+
 extern CSpeedCtrl gSpeedCtrl;
 //extern CMirrorAdmin gMirrorAdmin;
+
 using namespace std;
 
 CMgFileManager::CMgFileManager(
@@ -151,20 +154,20 @@ bool CMgFileManager::CheckFile()
 
     std::string tempmsg;
 
-	OutMsg( c_str(_("Task object:")) + m_sPathFileName , MSG_INFO );
+    OutMsg( _MGSTR( _S_FILEMGR_TASKOBJ ) + m_sPathFileName , MSG_INFO );
 
     //get user home directory
-    OutMsg( _("Get user temporary directory...:"), MSG_INFO );
+    OutMsg( _MGSTR( _S_FILEMGR_GETTEMPDIR ), MSG_INFO );
 
     std::string tempdir;
 
     if ( !GetTempDir( tempdir ) )
     {
-        OutMsg( _("Get tempdir fail"), MSG_ERROR );
+        OutMsg( "get tempdir fail", MSG_ERROR );
         return false;
     }
 
-    OutMsg( c_str(_("Temporary directory is:")) + tempdir );
+    OutMsg( _MGSTR( _S_FILEMGR_TEMPDIR ) + tempdir );
 #ifdef WIN32
 	tempdir += std::string( "\\" );
 #else
@@ -173,57 +176,57 @@ bool CMgFileManager::CheckFile()
     m_IndexName = tempdir + m_sFileName + std::string( ".mgidx" );
     m_PartName = tempdir + m_sFileName + std::string( ".mg" );
 
-    tempmsg = c_str(_("Temporary file is:")) + m_PartName;
+    tempmsg = _MGSTR( _S_FILEMGR_TEMPNAME ) + m_PartName;
     OutMsg( tempmsg );
-    tempmsg = c_str(_("Index file is:")) + m_IndexName;
+    tempmsg = _MGSTR( _S_FILEMGR_INDEXNAME ) + m_IndexName;
     OutMsg( tempmsg );
 
     //check if *.mgidx exists
 
     bool bCanResume = ( m_nFileLen == -1 ? false : true );
 
-    OutMsg( _("Check temporary file..."), MSG_INFO );
+    OutMsg( _MGSTR( _S_FILEMGR_CHECKTEMP ), MSG_INFO );
     FILE *fp;
 
     if ( bCanResume && NULL != ( fp = fopen( m_PartName.c_str(), "r" ) ) )
     {
         fclose( fp );
-        OutMsg( _("Temporary file exists."), MSG_INFO );
+        OutMsg( _MGSTR( _S_FILEMGR_TEMPEXIST ), MSG_INFO );
     }
     else
     {
         bCanResume = false;
-        OutMsg( _("Temporary file not exists."), MSG_WARNNING );
+        OutMsg( _MGSTR( _S_FILEMGR_TEMPNOTEXIST ), MSG_WARNNING );
     }
 
     if ( bCanResume )
     {
-        OutMsg( _("Check index file..."), MSG_INFO );
+        OutMsg( _MGSTR( _S_FILEMGR_CHECKINDEX ), MSG_INFO );
 
         if ( bCanResume && NULL != ( fp = fopen( m_IndexName.c_str(), "r" ) ) )
         {
             fclose( fp );
-            OutMsg( _("Index file exists."), MSG_INFO );
+            OutMsg( _MGSTR( _S_FILEMGR_INDEXEXIST ), MSG_INFO );
         }
         else
         {
             bCanResume = false;
-            OutMsg( _("Index file not exists."), MSG_WARNNING );
+            OutMsg( _MGSTR( _S_FILEMGR_INDEXNOTEXIST ), MSG_WARNNING );
         }
     }
 
     if ( bCanResume )
     {
-        OutMsg( _("Checking temporary file length...") );
+        OutMsg( _MGSTR( _S_FILEMGR_CHECKTEMPLENGTH ) );
 
         if ( bCanResume && m_nFileLen == FileSize( m_PartName ) )
         {
-            OutMsg( _("File length OK."), MSG_SUCCESS );
+            OutMsg( _MGSTR( _S_FILEMGR_LENGTHOK ), MSG_SUCCESS );
         }
         else
         {
             bCanResume = false;
-            OutMsg( _("File length check fail."), MSG_WARNNING );
+            OutMsg( _MGSTR( _S_FILEMGR_LENGTHFAIL ), MSG_WARNNING );
         }
     }
 
@@ -236,7 +239,7 @@ bool CMgFileManager::CheckFile()
     }
     else
     {
-        OutMsg( _("Creating new temp and index file..."), MSG_INFO );
+        OutMsg( _MGSTR( _S_FILEMGR_CREATEFILE ), MSG_INFO );
         //m_bOldExist = false;
         FILE *fp;
 
@@ -244,7 +247,7 @@ bool CMgFileManager::CheckFile()
         {
             if ( WriteIndex() < 0 )
             {
-                OutMsg( _("Create index file fail."), MSG_ERROR );
+                OutMsg( "create index file fail.", MSG_ERROR );
                 //m_bError = true;
                 return false;
             }
@@ -275,7 +278,7 @@ bool CMgFileManager::CheckFile()
                 if ( 0 != ftruncate64( fileno( fp ), m_nFileLen ) )
 #endif
                 {
-                    OutMsg( _("ftruncate fail,quit.\n"), MSG_ERROR );
+                    OutMsg( "ftruncate fail,quit.\n", MSG_ERROR );
                     return false;
                 }
 
@@ -283,7 +286,7 @@ bool CMgFileManager::CheckFile()
 
             } //if(m_nFileLen!=-1)
 
-            OutMsg( _("Creating new temp and index file..."), MSG_SUCCESS ); //msg should change
+            OutMsg( _MGSTR( _S_FILEMGR_CREATEFILE ), MSG_SUCCESS ); //msg should change
 
             fclose( fp );
 
@@ -331,7 +334,7 @@ int CMgFileManager::ReadIndex()
 
     if ( idxfile.bad() )
     {
-		OutMsg( _("Read index fail!"),MSG_ERROR);
+		OutMsg( "Read index fail!",MSG_ERROR);
 		return 0;
 	}
 
@@ -397,7 +400,7 @@ int CMgFileManager::ReadIndex()
         }
     }
 
-	if(m_Index.size()>=1) OutMsg(_("get index ok"));
+	if(m_Index.size()>=1) OutMsg("get index ok");
     return m_Index.size();
 }
 
@@ -609,11 +612,11 @@ int CMgFileManager::FileData( int tid, llong offset, int len, void *data, bool e
             { //socket close maybe not indicate the file end.
                 //sometime overload server will close the connection
                 //so we don't use this info if we alread have file size
-                OutMsg( _("Server closed socket not at file end, maybe file invalid."), MSG_WARNNING );
+                OutMsg( _MGSTR( _S_FILEMGR_ERRORCLOSESOCK ), MSG_WARNNING );
             }
             else
             {
-                OutMsg( _("File length have been confirmed."), MSG_SUCCESS );
+                OutMsg( _MGSTR( _S_FILEMGR_FILELENCONFIRM ), MSG_SUCCESS );
             }
         }
         else
@@ -622,7 +625,7 @@ int CMgFileManager::FileData( int tid, llong offset, int len, void *data, bool e
             char lenstr[ 24 ];
             sprintf( lenstr, "%lld", flen );
             m_nFileLen = flen;
-            OutMsg( c_str(_("Final file length:")) +  lenstr );
+            OutMsg( _MGSTR( _S_FILEMGR_ENDFILELEN ) + string( lenstr ) );
         }
     }
 
@@ -828,7 +831,7 @@ int CMgFileManager::WriteData( llong offset, int len, void *data, bool& combine 
 #endif
 
         {
-            OutMsg( _("fseeko fail."), MSG_ERROR );
+            OutMsg( "fseeko fail.", MSG_ERROR );
             return -1;
         }
 
@@ -841,30 +844,30 @@ int CMgFileManager::WriteData( llong offset, int len, void *data, bool& combine 
             {
                 if ( len != int( fwrite( data, 1, len, fp ) ) )
                 {
-                    OutMsg( _("fwrite fail."), MSG_ERROR );
+                    OutMsg( "fwrite fail.", MSG_ERROR );
                     return -1;
                 }
             }
             else if ( m_nFileLen - offset > 0 )
             {
-                OutMsg( _("data overload"), MSG_ERROR );
+                OutMsg( "data overload", MSG_ERROR );
 
                 if ( m_nFileLen - offset != int( fwrite( data, 1, m_nFileLen - offset, fp ) ) )
                 {
-                    OutMsg( _("fwrite fail."), MSG_ERROR );
+                    OutMsg( "fwrite fail.", MSG_ERROR );
                     return -1;
                 }
             }
             else
             {
-                OutMsg( _("data overload"), MSG_ERROR );
+                OutMsg( "data overload", MSG_ERROR );
             }
         }
         else //unknow filelen
         {
             if ( len != int( fwrite( data, 1, len, fp ) ) )
             {
-                OutMsg( _("fwrite fail."), MSG_ERROR );
+                OutMsg( "fwrite fail.", MSG_ERROR );
                 return -1;
             }
         }
@@ -890,7 +893,7 @@ int CMgFileManager::WriteData( llong offset, int len, void *data, bool& combine 
 
                         if ( m_Index[ i ].end > m_nFileLen )
                         {
-                            OutMsg( _("Data overload, maybe file invalid!"), MSG_WARNNING );
+                            OutMsg( _MGSTR( _S_FILEMGR_DATAOVERLOAD ), MSG_WARNNING );
                             m_Index[ i ].end = m_nFileLen;
                             combine = true;
                         }
@@ -927,7 +930,7 @@ int CMgFileManager::WriteData( llong offset, int len, void *data, bool& combine 
 
     }
 
-    OutMsg( _("open datafile error when write !!"), MSG_ERROR );
+    OutMsg( "open datafile error when write !!", MSG_ERROR );
     return -1;
 }
 
@@ -943,12 +946,12 @@ bool CMgFileManager::GetTask( int tid, llong &taskpos )
 
     if ( m_bStop )
     {
-        OutMsg( _("task canceled, no more work."), MSG_INFO );
+        OutMsg( "task canceled, no more work.", MSG_INFO );
         return false;
     }
 
 	if ( m_nFileLen == 0 ) {
-		OutMsg( _("zero length task, no work") , MSG_INFO );
+		OutMsg( "zero length task, no work" , MSG_INFO );
 		return false;  //a zero length task
 	}
 
@@ -1140,12 +1143,7 @@ void CMgFileManager::Stop()
 
 }
 
-void CMgFileManager::OutMsg( const wxChar* str, _MSGTYPE type )
-{
-    OutMsg(c_str(str), type );
-}
-
-void CMgFileManager::OutMsg( const std::string& str , _MSGTYPE type )
+void CMgFileManager::OutMsg( string str , _MSGTYPE type )
 {
     m_pParent->OutMsg( -2, str, type );
 }
@@ -1226,7 +1224,7 @@ bool CMgFileManager::GetTask(
 
     if ( !GetTask( aid, from ) )
     {
-        OutMsg( _("No more task, quit!"), MSG_INFO );
+        OutMsg( _MGSTR( _S_FILEMGR_NOTASK ), MSG_INFO );
         return false;
     }
 
@@ -1294,11 +1292,11 @@ void CMgFileManager::ReportUrl( int adjust, std::string url )
             m_UrlList[ i ].prior += adjust; //normal +200，temp fail -5000,invalid -100000
 
             if ( adjust > 0 )
-                OutMsg( c_str(_("URL OK:")) + url, MSG_SUCCESS );
+                OutMsg( _MGSTR( _S_FILEMGR_URLOK ) + url, MSG_SUCCESS );
             else if ( adjust <= -100000 )
-                OutMsg( c_str(_("URL fail:")) + url, MSG_ERROR );
+                OutMsg( _MGSTR( _S_FILEMGR_URLFAIL ) + url, MSG_ERROR );
             else
-                OutMsg( c_str(_("URL temp fail:")) + url, MSG_WARNNING );
+                OutMsg( _MGSTR( _S_FILEMGR_URLTEMPFAIL ) + url, MSG_WARNNING );
 
             break;
         }
@@ -1319,7 +1317,7 @@ void CMgFileManager::ReportRedirect( std::string origin, std::string redirect )
             m_UrlList[ i ].refer = m_UrlList[ i ].url;
             m_UrlList[ i ].url = redirect;
             m_UrlList[ i ].prior += 100; //an active url.
-            OutMsg( origin + c_str(_(" redirect to ")) + redirect, MSG_INFO );
+            OutMsg( origin + _MGSTR( _S_FILEMGR_REDIRECT ) + redirect, MSG_INFO );
             break;
         }
     }
@@ -1328,7 +1326,7 @@ void CMgFileManager::ReportRedirect( std::string origin, std::string redirect )
 }
 
 //must filter out the same
-void CMgFileManager::AddMirrorUrl( const std::string& url )
+void CMgFileManager::AddMirrorUrl( std::string url )
 {
 
     _ul tt;

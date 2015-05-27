@@ -44,6 +44,8 @@
 
 #include <string>
 
+#define  _MGSTR(s) wxGetApp().GetStr(s)
+
 using namespace std;
 extern void gfTaskLog( int ntaskid, std::string info, _MSGTYPE ntype, int ntime );
 CMgSingleTask::CMgSingleTask(
@@ -216,7 +218,7 @@ void CMgSingleTask::FinishTask( _SINGLE_TASK_STATUS status )
 
 void CMgSingleTask::InitThread()
 {
-    OutMsg( -1, _("Job running..."), MSG_INFO );
+    OutMsg( -1, _MGSTR ( _S_SINGLETASK_JOBRUN ), MSG_INFO );
 
     pthread_setcanceltype ( PTHREAD_CANCEL_ASYNCHRONOUS, NULL );
 
@@ -231,16 +233,16 @@ void CMgSingleTask::InitThread()
 
 again:
 
-    OutMsg( -1, _("Analysis URL..."), MSG_INFO );
+    OutMsg( -1, _MGSTR ( _S_SINGLETASK_ANALYSISURL ), MSG_INFO );
 
     if ( !upar.SetUrl( m_sUrl ) )
     {
-        OutMsg( -1, c_str(_("Not a support URL type.")) + m_sUrl, MSG_ERROR );
+        OutMsg( -1, _MGSTR ( _S_SINGLETASK_NOTSUPPORTURL ) + m_sUrl, MSG_ERROR );
         FinishTask( _TASK_ERROR );
         pthread_exit( 0 );
     }
 
-    OutMsg( -1, _("URL OK."), MSG_INFO );
+    OutMsg( -1, _MGSTR ( _S_SINGLETASK_TASKURLOK ), MSG_INFO );
     //任务参数
     m_Server = upar.GetServer();
 
@@ -255,7 +257,7 @@ again:
 
     if ( upar.GetUrlType() == FTP_PROTOCOL )   //ftp
     {
-        OutMsg( -1, _("Main URL is ftp type."), MSG_INFO );
+        OutMsg( -1, _MGSTR( _S_SINGLETASK_URLISFTP ), MSG_INFO );
 
         m_pFtpInfo = new CMgFtpInfo(
                          this,
@@ -268,14 +270,14 @@ again:
 
         if ( m_bUseProxy )
         {
-            OutMsg( -1, _("Task will use socks proxy."), MSG_INFO );
+            OutMsg( -1, _MGSTR ( _S_SINGLETASK_USESOCKSPROXY ), MSG_INFO );
             m_pFtpInfo->SetProxy( m_Proxy, m_ProxyPort, m_ProxyUser, m_ProxyPass, m_ProxyVersion );
 
         }
 
         if ( m_bUseFtpProxy )
         {
-            OutMsg( -1, _("Task will use ftp proxy."), MSG_INFO );
+            OutMsg( -1, _MGSTR ( _S_SINGLETASK_USEFTPPROXY ), MSG_INFO );
             m_pFtpInfo->SetFtpProxy( m_FtpProxy, m_FtpProxyPort );
         }
 
@@ -284,7 +286,7 @@ again:
         if ( !m_pFtpInfo->GetInfo() )
         { //error when get info. 2006/09/21
 
-            OutMsg( -1, _("Get file info error."), MSG_ERROR );
+            OutMsg( -1, _MGSTR ( _S_SINGLETASK_GETFILEINFOERROR ), MSG_ERROR );
             pthread_setcancelstate ( PTHREAD_CANCEL_DISABLE, &oldstate );
             delete m_pFtpInfo;
             m_pFtpInfo = NULL;
@@ -306,12 +308,12 @@ again:
         {
             if ( m_nFileLen == -1 )
             {
-                OutMsg( -1, _("No file length got."), MSG_WARNNING );
+                OutMsg( -1, _MGSTR ( _S_SINGLETASK_NOFILELENGTH ), MSG_WARNNING );
             }
 
             if ( !bresume )
             {
-                OutMsg( -1, _("Server cannot support resume method."), MSG_WARNNING );
+                OutMsg( -1, _MGSTR ( _S_SINGLETASK_NOTSUPPORTRESUME ), MSG_WARNNING );
             }
 
             m_nAnts = 1;
@@ -323,7 +325,7 @@ again:
     } //main url ftp
     else if ( upar.GetUrlType() == HTTP_PROTOCOL )
     { //http
-        OutMsg( -1, _("Main URL is http type."), MSG_INFO );
+        OutMsg( -1, _MGSTR ( _S_SINGLETASK_URLISHTTP ), MSG_INFO );
 
         m_pHttpInfo =
             new CMgHttpInfo(
@@ -338,21 +340,21 @@ again:
 
         if ( m_bUseProxy )
         {
-            OutMsg( -1, _("Task will use socks proxy."), MSG_INFO );
+            OutMsg( -1, _MGSTR ( _S_SINGLETASK_USESOCKSPROXY ), MSG_INFO );
             m_pHttpInfo->SetProxy( m_Proxy, m_ProxyPort, m_ProxyUser, m_ProxyPass, m_ProxyVersion );
 
         }
 
         if ( m_bUseHttpProxy )
         {
-            OutMsg( -1, _("Task will use http proxy."), MSG_INFO );
+            OutMsg( -1, _MGSTR ( _S_SINGLETASK_USEHTTPPROXY ), MSG_INFO );
             m_pHttpInfo->SetHttpProxy( m_HttpProxy, m_HttpProxyPort );
         }
 
         if ( !m_pHttpInfo->GetInfo() )
         { //error when get info.
 
-            OutMsg( -1, _("Get file info error."), MSG_ERROR );
+            OutMsg( -1, _MGSTR ( _S_SINGLETASK_GETFILEINFOERROR ), MSG_ERROR );
             pthread_setcancelstate ( PTHREAD_CANCEL_DISABLE, &oldstate );
             delete m_pHttpInfo;
             m_pHttpInfo = NULL;
@@ -399,7 +401,7 @@ again:
 
         if ( m_nFileLen == -1 )
         {
-            OutMsg( -1, _("No file length got."), MSG_WARNNING );
+            OutMsg( -1, _MGSTR ( _S_SINGLETASK_NOFILELENGTH ), MSG_WARNNING );
             m_nAnts = 1;
         }
 
@@ -407,7 +409,7 @@ again:
     } //http
     else
     {
-        OutMsg( -1, c_str(_("Not a support URL type.")) + m_sUrl, MSG_ERROR );
+        OutMsg( -1, _MGSTR ( _S_SINGLETASK_NOTSUPPORTURL ) + m_sUrl, MSG_ERROR );
 
         FinishTask( _TASK_ERROR );
         pthread_exit( 0 );
@@ -576,13 +578,9 @@ void CMgSingleTask::UpdateThreadInfo( CThreadInfoWindow* pwin, int tid )
     }
 }
 
-void CMgSingleTask::OutMsg( int tid, const wxChar * str, _MSGTYPE type )
-{
-	OutMsg(tid, c_str(str),type);
-}
 //tid是线程编号，从1开始计算，负数代表另外两个
 //output message,tid is 1 based
-void CMgSingleTask::OutMsg( int tid, const std::string& str, _MSGTYPE type )
+void CMgSingleTask::OutMsg( int tid, string str, _MSGTYPE type )
 {
 
 

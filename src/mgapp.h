@@ -30,8 +30,7 @@
 
 #include <wx/wx.h>
 #include <wx/msgdlg.h> 
-//Disable mgstring, we use GNU Gettext for i18n.
-//#include "mgstring.h"
+#include "mgstring.h"
 #include <vector>
 #include <list>
 #include <string>
@@ -41,7 +40,6 @@
 #endif
 
 #include "singlecheck.h"
-#include <wx/intl.h>
 
 class MainFrame;
 
@@ -53,20 +51,19 @@ protected:
     virtual bool OnInit();
 
 public:
-//    void SetLang( _MGLANG lang );
-//    _MGLANG GetLang();
-//    std::string GetStr( _MGSTRID id );
-//    wxString GetWxStr( _MGSTRID id );
+    void SetLang( _MGLANG lang );
+    _MGLANG GetLang();
+    std::string GetStr( _MGSTRID id );
+    wxString GetWxStr( _MGSTRID id );
 
 protected:
     virtual void OnFatalException();
     virtual int OnExit();
     void OnEndSession( wxCloseEvent& event );
     void CheckTempDir();
-//    CMgString m_MultiString;
+    CMgString m_MultiString;
     FILE* m_pipe;
     MainFrame *m_frame;
-    wxLocale m_locale; // locale we'll be using
 
     CSingleCheck *m_Checker;
     DECLARE_EVENT_TABLE()

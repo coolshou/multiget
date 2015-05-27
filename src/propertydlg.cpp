@@ -46,12 +46,13 @@ EVT_SPIN( prID_SPINFILE, CPropertyDlg::OnFileSpin )
 //EVT_TEXT( prID_URLTEXT, CPropertyDlg::OnUrlText )
 END_EVENT_TABLE()
 
+#define  _MGSTR(s) wxGetApp().GetWxStr(s)
 extern std::list<std::string> gSavePathHistory; //保存目录
 extern int gTaskDefThread, gRetryTime, gRetryWait;
 extern std::string gDefFtpPass;
 
 CPropertyDlg::CPropertyDlg( MainFrame* parent, int taskid )
-        : wxDialog( parent, -1, _("Task properties"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE| wxRESIZE_BORDER )
+        : wxDialog( parent, -1, _MGSTR( _S_PROPERTYDLG_TITLE ), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE| wxRESIZE_BORDER )
 {
     m_pParent = parent;
 
@@ -91,7 +92,7 @@ CPropertyDlg::CPropertyDlg( MainFrame* parent, int taskid )
 
             if ( par.GetFileName().empty() )
             {
-                m_sRename = _( "index.html" );
+                m_sRename = wxT( "index.html" );
             }
             else
             {
@@ -144,7 +145,7 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
     //old top
     wxBoxSizer *all = new wxBoxSizer( wxVERTICAL );
     //part1 url/mirror/savepath/rename
-    wxBoxSizer *part1 = new wxStaticBoxSizer( wxVERTICAL, this, _("Basic Info") );
+    wxBoxSizer *part1 = new wxStaticBoxSizer( wxVERTICAL, this, _MGSTR( _S_NEW_BASIC ) );
     //part2 run now/thread
     wxBoxSizer *part2 = new wxBoxSizer( wxHORIZONTAL );
     //part3 proxy
@@ -165,14 +166,14 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
     url->Add( new wxStaticText(
                   this,
                   -1,
-                  _("MAIN URL:"),
+                  _MGSTR( _S_NEW_URL ),
                   wxDefaultPosition,
                   wxSize( 70, 25 ) ), 0, wxALIGN_LEFT );
 
     m_pTextCtrl = new wxTextCtrl(
                       this,
                       -1,
-                      _( "" ),
+                      wxT( "" ),
                       wxDefaultPosition,
                       wxSize( 400, 25 ),
                       0,
@@ -201,7 +202,7 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
     mirrorurl->Add( new wxStaticText(
                         this,
                         -1,
-                        _("Mirrors:"),
+                        _MGSTR( _S_NEW_MIRRORURL ),
                         wxDefaultPosition,
                         wxSize( 70, 25 ) ), 0, wxALIGN_LEFT | wxALIGN_TOP );
 
@@ -221,7 +222,7 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
     savepath->Add( new wxStaticText(
                        this,
                        -1,
-                       _("Save To:"),
+                       _MGSTR( _S_NEW_SAVETO ),
                        wxDefaultPosition,
                        wxSize( 70, 25 ) ), 0, wxALIGN_LEFT );
 
@@ -248,7 +249,7 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
         new wxComboBox(
             this,
             -1,
-            _( "" ),
+            wxT( "" ),
             wxDefaultPosition,
             wxSize( 200, 25 ),
             pchoice,
@@ -256,12 +257,12 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
             wxGenericValidator( &m_sSavePath )
         ), 1, wxEXPAND );
 
-    savepath->Add( new wxButton( this, prID_PICKPATH, _( "..." ), wxDefaultPosition, wxSize( 35, 25 ) ), 0, wxALIGN_RIGHT );
-    rename->Add( new wxStaticText( this, -1, _("Rename:"), wxDefaultPosition, wxSize( 70, 25 ) ), 0, wxALIGN_LEFT );
+    savepath->Add( new wxButton( this, prID_PICKPATH, wxT( "..." ), wxDefaultPosition, wxSize( 35, 25 ) ), 0, wxALIGN_RIGHT );
+    rename->Add( new wxStaticText( this, -1, _MGSTR( _S_NEW_RENAME ), wxDefaultPosition, wxSize( 70, 25 ) ), 0, wxALIGN_LEFT );
     rename->Add( new wxTextCtrl(
                      this,
                      -1,
-                     _( "" ),
+                     wxT( "" ),
                      wxDefaultPosition,
                      wxSize( 200, 25 ),
                      1,
@@ -278,8 +279,8 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
 
     //part2
 
-    wxBoxSizer *threads = new wxStaticBoxSizer( wxHORIZONTAL, this, _("Threads") );
-    m_ThSpin = new wxSpinCtrl( this, prID_SPINTHREAD, _( "" ), wxDefaultPosition, wxSize( 20, 25 ) ); //
+    wxBoxSizer *threads = new wxStaticBoxSizer( wxHORIZONTAL, this, _MGSTR( _S_NEW_THREADNUM ) );
+    m_ThSpin = new wxSpinCtrl( this, prID_SPINTHREAD, wxT( "" ), wxDefaultPosition, wxSize( 20, 25 ) ); //
     m_ThSpin->SetRange( 1, 10 );
     m_ThSpin->SetValue( m_nThreadNum );
 
@@ -296,9 +297,9 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
 
     part2->AddSpacer( 10 );
 
-    wxBoxSizer *retry = new wxStaticBoxSizer( wxHORIZONTAL, this, _("Retry") );
+    wxBoxSizer *retry = new wxStaticBoxSizer( wxHORIZONTAL, this, _MGSTR( _S_NEW_RETRY ) );
 
-    m_ThRetry = new wxSpinCtrl( this, prID_SPINRETRY, _( "" ), wxDefaultPosition, wxSize( 20, 25 ) ); //
+    m_ThRetry = new wxSpinCtrl( this, prID_SPINRETRY, wxT( "" ), wxDefaultPosition, wxSize( 20, 25 ) ); //
 
     m_ThRetry->SetRange( 0, 999 );
 
@@ -317,9 +318,9 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
 
     part2->AddSpacer( 10 );
 
-    wxBoxSizer *retrywait = new wxStaticBoxSizer( wxHORIZONTAL, this, _("Retry Wait [s]") );
+    wxBoxSizer *retrywait = new wxStaticBoxSizer( wxHORIZONTAL, this, _MGSTR( _S_NEW_RETRYWAIT ) );
 
-    m_ThRetryWait = new wxSpinCtrl( this, prID_SPINRETRYWAIT, _( "" ), wxDefaultPosition, wxSize( 20, 25 ) ); //
+    m_ThRetryWait = new wxSpinCtrl( this, prID_SPINRETRYWAIT, wxT( "" ), wxDefaultPosition, wxSize( 20, 25 ) ); //
 
     m_ThRetryWait->SetRange( 5, 3000 );
 
@@ -339,7 +340,7 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
 
     //part3 proxy
 
-    wxStaticBoxSizer* proxy = new wxStaticBoxSizer( wxVERTICAL, this, _("Proxys[option]") );
+    wxStaticBoxSizer* proxy = new wxStaticBoxSizer( wxVERTICAL, this, _MGSTR( _S_NEW_PROXY ) );
 
     wxBoxSizer* socks = new wxBoxSizer( wxHORIZONTAL );
 
@@ -347,7 +348,7 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
 
     wxBoxSizer* http = new wxBoxSizer( wxHORIZONTAL );
 
-    socks->Add( new wxStaticText( this, -1, _( "SOCKS:" ), wxDefaultPosition, wxSize( 70, 25 ) ), 0, wxALIGN_LEFT );
+    socks->Add( new wxStaticText( this, -1, wxT( "SOCKS:" ), wxDefaultPosition, wxSize( 70, 25 ) ), 0, wxALIGN_LEFT );
 
     wxArrayString socksarray; //socks list
 
@@ -372,7 +373,7 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
 
     proxy->Add( socks, 1, wxEXPAND );
 
-    ftp->Add( new wxStaticText( this, -1, _( "FTP:" ), wxDefaultPosition, wxSize( 70, 25 ) ), 0, wxALIGN_LEFT );
+    ftp->Add( new wxStaticText( this, -1, wxT( "FTP:" ), wxDefaultPosition, wxSize( 70, 25 ) ), 0, wxALIGN_LEFT );
 
     wxArrayString ftparray; //socks list
 
@@ -398,7 +399,7 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
 
     proxy->Add( ftp, 1, wxEXPAND );
 
-    http->Add( new wxStaticText( this, -1, _( "HTTP:" ), wxDefaultPosition, wxSize( 70, 25 ) ), 0, wxALIGN_LEFT );
+    http->Add( new wxStaticText( this, -1, wxT( "HTTP:" ), wxDefaultPosition, wxSize( 70, 25 ) ), 0, wxALIGN_LEFT );
 
     wxArrayString httparray; //socks list
 
@@ -428,19 +429,19 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
 
     //part4
 
-    wxStaticBoxSizer* userpass = new wxStaticBoxSizer( wxHORIZONTAL, this, _("Login[option]") );
+    wxStaticBoxSizer* userpass = new wxStaticBoxSizer( wxHORIZONTAL, this, _MGSTR( _S_NEW_LOGIN ) );
 
     userpass->Add( new wxStaticText(
                        this,
                        -1,
-                       _("User:"),
+                       _MGSTR( _S_NEW_USER ),
                        wxDefaultPosition,
                        wxSize( 70, 25 ) ), 0, wxALIGN_RIGHT );
 
     wxTextCtrl *tmp1 = new wxTextCtrl(
                            this,
                            -1,
-                           _( "" ),
+                           wxT( "" ),
                            wxDefaultPosition,
                            wxSize( 60, 25 ),
                            0,
@@ -456,14 +457,14 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
     userpass->Add( new wxStaticText(
                        this,
                        -1,
-                       _("Password:"),
+                       _MGSTR( _S_NEW_PASS ),
                        wxDefaultPosition,
                        wxSize( 70, 25 ) ), 0, wxALIGN_RIGHT );
 
     wxTextCtrl *tmp2 = new wxTextCtrl(
                            this,
                            -1,
-                           _( "" ),
+                           wxT( "" ),
                            wxDefaultPosition,
                            wxSize( 80, 25 ),
                            0,
@@ -480,21 +481,21 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
 
     wxBoxSizer* but = new wxBoxSizer( wxHORIZONTAL );
 
-    but->Add( new wxButton( this, wxID_CANCEL, _( "Cancel" ) ), 0, wxALL, 5 );
+    but->Add( new wxButton( this, wxID_CANCEL, wxT( "Cancel" ) ), 0, wxALL, 5 );
 
-    but->Add( new wxButton( this, wxID_OK, _( "OK" ) ), 0, wxALL, 5 );
+    but->Add( new wxButton( this, wxID_OK, wxT( "OK" ) ), 0, wxALL, 5 );
 
     part5->Add( but, 0, wxALIGN_RIGHT );
 
     //part6
-    wxStaticBoxSizer* refer = new wxStaticBoxSizer( wxHORIZONTAL, this, _("Reference[option]") );
+    wxStaticBoxSizer* refer = new wxStaticBoxSizer( wxHORIZONTAL, this, _MGSTR( _S_NEW_REFER ) );
 
-    refer->Add( new wxStaticText( this, -1, _("Refer:"), wxDefaultPosition, wxSize( 70, 25 ) ), 0, wxALIGN_RIGHT );
+    refer->Add( new wxStaticText( this, -1, _MGSTR( _S_NEW_REFERADDR ), wxDefaultPosition, wxSize( 70, 25 ) ), 0, wxALIGN_RIGHT );
 
     wxTextCtrl *tmp6 = new wxTextCtrl(
                            this,
                            -1,
-                           _( "" ),
+                           wxT( "" ),
                            wxDefaultPosition,
                            wxSize( 80, 25 ),
                            0,
@@ -549,7 +550,7 @@ void CPropertyDlg::Init( _TASK_TYPE ttype )
 
 void CPropertyDlg::OnPickPath( wxCommandEvent& event )
 {
-    wxDirDialog dlg( this, _("Choose a directory to save file"), m_sSavePath, wxDD_NEW_DIR_BUTTON );
+    wxDirDialog dlg( this, _MGSTR( _S_NEW_CHOOSEPATH ), m_sSavePath, wxDD_NEW_DIR_BUTTON );
 
     if ( dlg.ShowModal() == wxID_OK )
     {
@@ -659,7 +660,7 @@ void CPropertyDlg::InitProxyList( std::string socks, std::string ftp, std::strin
 
     _PL temp;
     temp.name = "";
-    temp.showname = _("None");
+    temp.showname = _MGSTR( _S_NEW_NONE );
 
     m_SocksProxyList.push_back( temp );
     m_FtpProxyList.push_back( temp );
@@ -680,15 +681,15 @@ void CPropertyDlg::InitProxyList( std::string socks, std::string ftp, std::strin
             {
                 temp.name = pa.sName;
 #ifndef _UNICODE
-                tstr.Printf( _("%s[%s:%d][auto]"), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
+                tstr.Printf( wxT("%s[%s:%d][auto]"), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
 #else
 				//use Printf in UNICODE will error
 				wxString port;
-				port.Printf(_("%d"), pa.nPort);
+				port.Printf(wxT("%d"), pa.nPort);
 
 				tstr = 	wxString ( pa.sName.c_str(), wxConvLocal ) + 
-						_("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
-						_(":") + port + _("][auto]");
+						wxT("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
+						wxT(":") + port + wxT("][auto]");
 #endif
                 temp.showname = tstr;
                 m_SocksProxyList.push_back( temp );
@@ -701,15 +702,15 @@ void CPropertyDlg::InitProxyList( std::string socks, std::string ftp, std::strin
                 temp.name = pa.sName;
 #ifndef _UNICODE
 
-                tstr.Printf( _( "%s[%s:%d][v4]" ), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
+                tstr.Printf( wxT( "%s[%s:%d][v4]" ), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
 #else
 				//use Printf in UNICODE will error
 				wxString port;
-				port.Printf(_("%d"), pa.nPort);
+				port.Printf(wxT("%d"), pa.nPort);
 
 				tstr = 	wxString ( pa.sName.c_str(), wxConvLocal ) + 
-						_("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
-						_(":") + port + _("][v4]");
+						wxT("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
+						wxT(":") + port + wxT("][v4]");
 
 #endif
                 temp.showname = tstr;
@@ -723,15 +724,15 @@ void CPropertyDlg::InitProxyList( std::string socks, std::string ftp, std::strin
                 temp.name = pa.sName;
 #ifndef _UNICODE
 
-                tstr.Printf( _( "%s[%s:%d][v4a]" ), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
+                tstr.Printf( wxT( "%s[%s:%d][v4a]" ), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
 #else
 				//use Printf in UNICODE will error
 				wxString port;
-				port.Printf(_("%d"), pa.nPort);
+				port.Printf(wxT("%d"), pa.nPort);
 
 				tstr = 	wxString ( pa.sName.c_str(), wxConvLocal ) + 
-						_("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
-						_(":") + port + _("][v4a]");
+						wxT("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
+						wxT(":") + port + wxT("][v4a]");
 #endif
                 temp.showname = tstr;
                 m_SocksProxyList.push_back( temp );
@@ -745,15 +746,15 @@ void CPropertyDlg::InitProxyList( std::string socks, std::string ftp, std::strin
                 temp.name = pa.sName;
 #ifndef _UNICODE
 
-                tstr.Printf( _( "%s[%s:%d][v5]" ), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
+                tstr.Printf( wxT( "%s[%s:%d][v5]" ), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
 #else
 				//use Printf in UNICODE will error
 				wxString port;
-				port.Printf(_("%d"), pa.nPort);
+				port.Printf(wxT("%d"), pa.nPort);
 
 				tstr = 	wxString ( pa.sName.c_str(), wxConvLocal ) + 
-						_("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
-						_(":") + port + _("][v5]");
+						wxT("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
+						wxT(":") + port + wxT("][v5]");
 #endif
                 temp.showname = tstr;
                 m_SocksProxyList.push_back( temp );
@@ -765,15 +766,15 @@ void CPropertyDlg::InitProxyList( std::string socks, std::string ftp, std::strin
             {
                 temp.name = pa.sName;
 #ifndef _UNICODE
-                tstr.Printf( _( "%s[%s:%d]" ), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
+                tstr.Printf( wxT( "%s[%s:%d]" ), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
 #else
 				//use Printf in UNICODE will error
 				wxString port;
-				port.Printf(_("%d"), pa.nPort);
+				port.Printf(wxT("%d"), pa.nPort);
 
 				tstr = 	wxString ( pa.sName.c_str(), wxConvLocal ) + 
-						_("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
-						_(":") + port + _("]");
+						wxT("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
+						wxT(":") + port + wxT("]");
 #endif
                 temp.showname = tstr;
                 m_FtpProxyList.push_back( temp );
@@ -785,15 +786,15 @@ void CPropertyDlg::InitProxyList( std::string socks, std::string ftp, std::strin
             {
                 temp.name = pa.sName;
 #ifndef _UNICODE
-                tstr.Printf( _( "%s[%s:%d]" ), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
+                tstr.Printf( wxT( "%s[%s:%d]" ), pa.sName.c_str(), pa.sServer.c_str(), pa.nPort );
 #else
 				//use Printf in UNICODE will error
 				wxString port;
-				port.Printf(_("%d"), pa.nPort);
+				port.Printf(wxT("%d"), pa.nPort);
 
 				tstr = 	wxString ( pa.sName.c_str(), wxConvLocal ) + 
-						_("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
-						_(":") + port + _("]");
+						wxT("[") + wxString( pa.sServer.c_str(), wxConvLocal ) + 
+						wxT(":") + port + wxT("]");
 #endif
                 temp.showname = tstr;
                 m_HttpProxyList.push_back( temp );
@@ -808,17 +809,17 @@ void CPropertyDlg::InitProxyList( std::string socks, std::string ftp, std::strin
 
     if ( m_SocksProxyList.size() == 1 )
     {
-        m_SocksProxyList[ 0 ].showname = _("no socks proxy preseted");
+        m_SocksProxyList[ 0 ].showname = _MGSTR( _S_NEW_NOSOCKSPROXY );
     }
 
     if ( m_FtpProxyList.size() == 1 )
     {
-        m_FtpProxyList[ 0 ].showname = _("no ftp proxy preseted");
+        m_FtpProxyList[ 0 ].showname = _MGSTR( _S_NEW_NOFTPPROXY );
     }
 
     if ( m_HttpProxyList.size() == 1 )
     {
-        m_HttpProxyList[ 0 ].showname = _("no http proxy preseted");
+        m_HttpProxyList[ 0 ].showname = _MGSTR( _S_NEW_NOHTTPPROXY );
     }
 
 

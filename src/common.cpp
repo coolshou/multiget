@@ -26,7 +26,7 @@
 #include "speedctrl.h"
 #include "mirroradmin.h"
 
-
+#include <stdlib.h> //getenv
 #include <pthread.h>
 
 #ifdef WIN32

@@ -95,7 +95,7 @@ public:
         std::string& refer
     );
 
-    void AddMirrorUrl(const std::string& url );
+    void AddMirrorUrl( std::string url );
 
 protected:
 
@@ -106,9 +106,7 @@ protected:
     void OrderIndex();
     void MergeIndex();
     void AddNewIndex( int tid, llong pos );
-
-    void OutMsg( const std::string& outmsg, _MSGTYPE type = MSG_INFO );
-	void OutMsg( const wxChar* str, _MSGTYPE type = MSG_INFO );
+    void OutMsg( std::string outmsg, _MSGTYPE type = MSG_INFO );
 
     bool GetTask( int tid, llong &taskpos );
 

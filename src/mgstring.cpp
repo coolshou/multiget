@@ -136,5 +136,5 @@ wxString CMgString::GetWxStr( _MGSTRID id )
 
 
     //other lang goes here
-    return _( "no lang" );
+    return wxT( "no lang" );
 }

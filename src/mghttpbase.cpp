@@ -47,6 +47,7 @@ error code:
 #endif
 
 #include "mghttpbase.h"
+#include <stdio.h>   //sprintf()
 #include <iostream>
 
 using namespace std;

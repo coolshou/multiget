@@ -26,6 +26,8 @@
 #include <winsock2.h>
 #endif
 #include "mgftpbase.h" 
+#include <stdio.h>   //sprintf()
+#include <cstdlib> //atoi()
 /*
 	the UTF-8 Chinese char will break vc6 compile
 	

@@ -35,6 +35,8 @@
 
 using namespace std;
 
+#define  _MGSTR(s) wxGetApp().GetStr(s)
+
 CMgFtpAnts::CMgFtpAnts(
     CMgSingleTask	*parent,
     CMgFileManager *fm,
@@ -74,13 +76,8 @@ CMgFtpAnts::~CMgFtpAnts()
 {
 }
 
-void CMgFtpAnts::OutMsg( const wxChar* str, _MSGTYPE type )
-{
-    OutMsg(c_str(str), type );
-}
-
 //消息输出函数
-void CMgFtpAnts::OutMsg( const string& str, _MSGTYPE type )
+void CMgFtpAnts::OutMsg( string str, _MSGTYPE type )
 {
     m_pParent->OutMsg( m_nAntId, str, type );
 }
@@ -103,13 +100,13 @@ again:
     Close();
     DataSock.Close();
 
-    OutMsg( c_str(_("Connecting ")) + m_Server + std::string( "..." ) );
+    OutMsg( _MGSTR ( _S_ANTS_CONNECTING ) + m_Server + std::string( "..." ) );
 
     //make connection
 
     if ( !MakeCtrlConn ( m_Server.c_str(), m_Port ) )
     {
-        OutMsg( _("Connect fail."), MSG_WARNNING );
+        OutMsg( _MGSTR ( _S_ANTS_CONNECTFAIL ), MSG_WARNNING );
 
         if ( Retry() )
         {
@@ -117,7 +114,7 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return -1;
         }
     }
@@ -126,7 +123,7 @@ again:
     //login
     if ( !Login( m_user.c_str(), m_pass.c_str() ) )
     {
-        OutMsg( _("Login fail."), MSG_WARNNING );
+        OutMsg( _MGSTR ( _S_ANTS_LOGINFAIL ), MSG_WARNNING );
 
         if ( Retry() )
         {
@@ -134,7 +131,7 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return -2;
         }
 
@@ -145,7 +142,7 @@ again:
     {
         Logout();
 
-        OutMsg( _("Enter passive mode fail."), MSG_WARNNING );
+        OutMsg( _MGSTR( _S_ANTS_ENTERPASVFAIL ), MSG_WARNNING );
 
         if ( Retry() )
         {
@@ -153,7 +150,7 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return -5;
         }
 
@@ -171,7 +168,7 @@ again:
     {
         Logout();
 
-        OutMsg( _("Data connection fail"), MSG_WARNNING );
+        OutMsg( _MGSTR ( _S_ANTS_DATACONNFAIL ), MSG_WARNNING );
 
         if ( Retry() )
         {
@@ -179,20 +176,20 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return -6;
         }
 
     }
 
-    OutMsg( _("Data connection Ok"), MSG_SUCCESS );
+    OutMsg( _MGSTR ( _S_ANTS_DATACONNOK ), MSG_SUCCESS );
 
 
     if ( !EnterBinaryMode( ) )
     {
         Logout();
 
-        OutMsg( _("Enter binary mode fail"), MSG_WARNNING );
+        OutMsg( _MGSTR ( _S_ANTS_BINARYFAIL ), MSG_WARNNING );
 
         if ( Retry() )
         {
@@ -200,7 +197,7 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return -3;
         }
 
@@ -213,7 +210,7 @@ again:
         {
             Logout();
 
-            OutMsg( _("Set resume point fail"), MSG_WARNNING );
+            OutMsg( _MGSTR ( _S_ANTS_SETRESUMEFAIL ), MSG_WARNNING );
 
             if ( Retry() )
             {
@@ -221,7 +218,7 @@ again:
             }
             else
             {
-            	OutMsg( _("No more retry, quit."), MSG_ERROR );
+                OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
                 return -4;
             }
 
@@ -233,7 +230,7 @@ again:
     {
         Logout();
 
-        OutMsg( _("Fail to get file"), MSG_WARNNING );
+        OutMsg( _MGSTR ( _S_ANTS_FAILTOGETFILE ), MSG_WARNNING );
 
         if ( Retry() )
         {
@@ -241,14 +238,14 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return -7;
         }
 
     }
 
     char buf[ 100 ];
-    sprintf( buf, (c_str(_("Receiving file data from %lld ..."))).c_str(), m_from + m_nTotalByte );
+    sprintf( buf, (_MGSTR ( _S_ANTS_RECVFILEDATA )).c_str(), m_from + m_nTotalByte );
     OutMsg( buf );
 
     llong ndata = 0;	//本次GetData接收到的数量
@@ -257,7 +254,7 @@ again:
 
     if ( nret == 0 )
     { //ok
-        OutMsg( _("Finish task session normally, quit.") , MSG_SUCCESS);
+        OutMsg( _MGSTR ( _S_ANTS_FINISHNORMAL ) , MSG_SUCCESS);
         return 1;
     }
     else
@@ -267,19 +264,19 @@ again:
         {
 
             case -1:
-            OutMsg( _("Write file error."), MSG_WARNNING );
+            OutMsg( _MGSTR ( _S_ANTS_WRITEERROR ), MSG_WARNNING );
             break;
 
             case - 2:
-            OutMsg( _("Network error."), MSG_WARNNING );
+            OutMsg( _MGSTR ( _S_ANTS_NETERROR ), MSG_WARNNING );
             break;
 
             case - 3:
-            OutMsg( _("change a URL" ), MSG_WARNNING );
+            OutMsg( _MGSTR ( _S_ANTS_CHANGEURL ), MSG_WARNNING );
             break;
 
             default:
-            OutMsg( _("Other error"), MSG_WARNNING );
+            OutMsg( "Other error", MSG_WARNNING );
             break;
         }
 
@@ -295,7 +292,7 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return nret;
         }
     }
@@ -489,7 +486,7 @@ bool CMgFtpAnts::Retry()
     {
         char buf[ 50 ];
 
-        sprintf( buf, (c_str(_("Wait %d seconds to retry..."))).c_str(), m_nRetryWait );
+        sprintf( buf, (_MGSTR ( _S_ANTS_WAITTORETRY )).c_str(), m_nRetryWait );
 
         OutMsg( buf );
 

@@ -42,8 +42,12 @@
 #include <windows.h>
 #endif
 #include <pthread.h>
+#include <cstdlib> //atoi()
+#include <string.h> //strncasecmp
 
 using namespace std;
+
+#define  _MGSTR(s) wxGetApp().GetStr(s)
 
 CMgHttpAnts::CMgHttpAnts(
     CMgSingleTask	*parent,
@@ -84,12 +88,7 @@ CMgHttpAnts::~CMgHttpAnts()
 
 
 
-void CMgHttpAnts::OutMsg( const wxChar * str, _MSGTYPE type )
-{
-    OutMsg( c_str(str), type );
-}
-
-void CMgHttpAnts::OutMsg( const string& str, _MSGTYPE type )
+void CMgHttpAnts::OutMsg( string str, _MSGTYPE type )
 {
     m_pParent->OutMsg( m_nAntId, str, type );
 }
@@ -108,11 +107,11 @@ int CMgHttpAnts::Go()
 
 again:
     //make connection
-    OutMsg( c_str(_("Connecting ")) + m_sServer + string( "..." ) );
+    OutMsg( _MGSTR ( _S_ANTS_CONNECTING ) + m_sServer + string( "..." ) );
 
     if ( !Connect( m_sServer.c_str(), m_Port ) )
     {
-        OutMsg( _("Connect fail."), MSG_WARNNING );
+        OutMsg( _MGSTR ( _S_ANTS_CONNECTFAIL ), MSG_WARNNING );
 
         if ( Retry() )
         {
@@ -120,7 +119,7 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return -1;
         }
 
@@ -130,7 +129,7 @@ again:
     //remove http header info we don't want
     if ( !GetFile( m_file.c_str(), m_nFrom + m_nTotalByte, m_refer.c_str() ) )
     {
-        OutMsg( _("Fail to get file"), MSG_WARNNING );
+        OutMsg( _MGSTR ( _S_ANTS_FAILTOGETFILE ), MSG_WARNNING );
 
         if ( Retry() )
         {
@@ -138,14 +137,14 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return -2;
         }
     }
 
 
     char buf[ 100 ];
-    sprintf( buf, c_str(_("Receiving file data from %lld ...")).c_str(), m_nFrom + m_nTotalByte );
+    sprintf( buf, (_MGSTR ( _S_ANTS_RECVFILEDATA )).c_str(), m_nFrom + m_nTotalByte );
     OutMsg( buf, MSG_INFO );
 
     llong ndata = 0;
@@ -155,7 +154,7 @@ again:
     if ( nret == 0 )
     { //ok
 
-        OutMsg( _("Finish task session normally, quit.") , MSG_SUCCESS );
+        OutMsg( _MGSTR ( _S_ANTS_FINISHNORMAL ) , MSG_SUCCESS );
         return 1;
 
     }
@@ -166,15 +165,15 @@ again:
         {
 
             case -1:
-            OutMsg( _("Write file error."), MSG_WARNNING );
+            OutMsg( _MGSTR ( _S_ANTS_WRITEERROR ), MSG_WARNNING );
             break;
 
             case - 2:
-            OutMsg( _("Network error."), MSG_WARNNING );
+            OutMsg( _MGSTR ( _S_ANTS_NETERROR ), MSG_WARNNING );
             break;
 
             case - 3:
-            OutMsg( _("change a URL"), MSG_WARNNING );
+            OutMsg( _MGSTR ( _S_ANTS_CHANGEURL ), MSG_WARNNING );
             break;
 
             default:
@@ -197,7 +196,7 @@ again:
         }
         else
         {
-            OutMsg( _("No more retry, quit."), MSG_ERROR );
+            OutMsg( _MGSTR ( _S_ANTS_NORETRY ), MSG_ERROR );
             return nret;
         }
     }
@@ -448,7 +447,7 @@ bool CMgHttpAnts::Retry()
     {
         char buf[ 50 ];
 
-        sprintf( buf, c_str(_("Wait %d seconds to retry...")).c_str(), m_nRetryWait );
+        sprintf( buf, (_MGSTR ( _S_ANTS_WAITTORETRY )).c_str(), m_nRetryWait );
 
         OutMsg( buf );
 

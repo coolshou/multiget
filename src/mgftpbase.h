@@ -59,8 +59,7 @@ public:
 
 protected:
     bool GetLenFromBuf( const char* listdataline, llong& size );
-    virtual void OutMsg( const std::string& str, _MSGTYPE type ) = 0;
-    virtual void OutMsg( const wxChar * str, _MSGTYPE type ) = 0;
+    virtual void OutMsg( std::string str, _MSGTYPE type ) = 0;
 
 private:
     //bool m_bBinaryMode;

@@ -90,6 +90,7 @@ EVT_TASKBAR_LEFT_DOWN ( CSysTray::OnLeftButtonClick )
 EVT_TASKBAR_RIGHT_DOWN( CSysTray::OnRightButtonClick )
 END_EVENT_TABLE()
 
+#define _MGSTR(s) wxGetApp().GetWxStr(s)
 extern _SPEED_MODE gSpeedMode;
 extern bool gbShowDropWin, gbMonitorClip;
 
@@ -150,22 +151,22 @@ wxMenu* CSysTray::CreatePopupMenu()
     wxMenuItem *ti;
 
     ti =
-        new wxMenuItem( menu, PU_RESTORE, _("Show/Hide MultiGet"), _( "" ) );
+        new wxMenuItem( menu, PU_RESTORE, _MGSTR( _S_TRAY_HIDERESTORE ), wxT( "" ) );
     ti->SetBitmap( wxBitmap( sysicon_win_xpm ) );
 
     menu->Append( ti );
 
     menu->AppendSeparator();
 
-    menu->AppendCheckItem( PU_SHOWDROPWIN, _("Show Drop Window") );
-    menu->AppendCheckItem( PU_MONITORCLIP, _("Monitor Clipboard") );
+    menu->AppendCheckItem( PU_SHOWDROPWIN, _MGSTR( _S_TRAY_SHOWDROPWIN ) );
+    menu->AppendCheckItem( PU_MONITORCLIP, _MGSTR( _S_TRAY_MONITERCLIP ) );
     menu->AppendSeparator();
-    menu->Append( PU_STARTALL, _("Start All") );
-    menu->Append( PU_STOPALL, _("Stop All") );
+    menu->Append( PU_STARTALL, _MGSTR( _S_TRAY_STARTALL ) );
+    menu->Append( PU_STOPALL, _MGSTR( _S_TRAY_STOPALL ) );
     menu->AppendSeparator();
 
     ti =
-        new wxMenuItem( menu, PU_NEWTASK, _("New task"), _( "" ) );
+        new wxMenuItem( menu, PU_NEWTASK, _MGSTR( _S_NEW_TASK ), wxT( "" ) );
     ti->SetBitmap( wxBitmap( new_xpm ) );
     menu->Append( ti );
 
@@ -176,26 +177,26 @@ wxMenu* CSysTray::CreatePopupMenu()
     //speed mode popup
     //menu->Append(PU_SPEEDMODE, _MGSTR(_S_SPEEDMODE));
     wxMenu *speed = new wxMenu;
-    speed->AppendRadioItem( PU_SPEED_UNLIMIT, _("No Limit"), _( "" ) );
+    speed->AppendRadioItem( PU_SPEED_UNLIMIT, _MGSTR( _S_TRAY_NOLIMIT ), wxT( "" ) );
     speed->AppendSeparator();
-    speed->AppendRadioItem( PU_SPEED_LIMIT5M, _( "5MB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT2M, _( "2MB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT1M, _( "1MB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT700K, _( "700KB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT500K, _( "500KB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT400K, _( "400KB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT300K, _( "300KB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT200K, _( "200KB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT100K, _( "100KB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT50K, _( "50KB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT20K, _( "20KB/s" ), _( "" ) );
-    speed->AppendRadioItem( PU_SPEED_LIMIT10K, _( "10KB/s" ), _( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT5M, wxT( "5MB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT2M, wxT( "2MB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT1M, wxT( "1MB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT700K, wxT( "700KB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT500K, wxT( "500KB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT400K, wxT( "400KB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT300K, wxT( "300KB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT200K, wxT( "200KB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT100K, wxT( "100KB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT50K, wxT( "50KB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT20K, wxT( "20KB/s" ), wxT( "" ) );
+    speed->AppendRadioItem( PU_SPEED_LIMIT10K, wxT( "10KB/s" ), wxT( "" ) );
 
-    menu->Append( PU_SPEEDMODE, _("Speed Mode"), speed );
+    menu->Append( PU_SPEEDMODE, _MGSTR( _S_SPEEDMODE ), speed );
 
     menu->AppendSeparator();
     ti =
-        new wxMenuItem( menu, PU_OPTION, _("Option(&P)"), _( "" ) );
+        new wxMenuItem( menu, PU_OPTION, _MGSTR( _S_MENU_OPTION ), wxT( "" ) );
     ti->SetBitmap( wxBitmap( option_xpm ) );
     menu->Append( ti );
     //menu->Append(PU_OPTION, _MGSTR(_S_MENU_OPTION));
@@ -203,14 +204,14 @@ wxMenu* CSysTray::CreatePopupMenu()
 
 
     ti =
-        new wxMenuItem( menu, PU_ABOUT, _("About\tCtrl+O"), _( "" ) );
+        new wxMenuItem( menu, PU_ABOUT, _MGSTR( _S_MENU_HELP_ABOUT ), wxT( "" ) );
     ti->SetBitmap( wxBitmap( about_xpm ) );
     menu->Append( ti );
 
     menu->AppendSeparator();
 
     ti =
-        new wxMenuItem( menu, PU_EXIT, _("Quit\tCtrl+Q"), _( "" ) );
+        new wxMenuItem( menu, PU_EXIT, _MGSTR( _S_MENU_FILE_QUIT ), wxT( "" ) );
     ti->SetBitmap( wxBitmap( quit_xpm ) );
     menu->Append( ti );
 

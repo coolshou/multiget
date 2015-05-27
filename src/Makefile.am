@@ -36,6 +36,7 @@ multiget_SOURCES = \
 	lefttree.h \
 	lefttreeitemdata.cpp \
 	lefttreeitemdata.h \
+	linux_str.txt \
 	listenpipe.cpp \
 	listenpipe.h \
 	mainframe.cpp \
@@ -71,6 +72,8 @@ multiget_SOURCES = \
 	mgsingletask.h \
 	mgsocket.cpp \
 	mgsocket.h \
+	mgstring.cpp \
+	mgstring.h \
 	mgurlparser.cpp \
 	mgurlparser.h \
 	mirroradmin.cpp \

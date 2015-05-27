@@ -46,10 +46,10 @@ extern int gDropWinX, gDropWinY;
 
 CFloatWin::CFloatWin( MainFrame* parent )
 #ifdef WIN32
-: wxMiniFrame( NULL, -1, _( "drop" ), wxPoint( gDropWinX, gDropWinY ), wxSize( 32, 32 ),
+: wxMiniFrame( NULL, -1, wxT( "drop" ), wxPoint( gDropWinX, gDropWinY ), wxSize( 32, 32 ),
            wxSTAY_ON_TOP | wxFRAME_NO_TASKBAR | wxNO_BORDER  )
 #else
-: wxDialog( NULL, -1, _( "drop" ), wxPoint( gDropWinX, gDropWinY ), wxSize( 32, 32 ),
+: wxDialog( NULL, -1, wxT( "drop" ), wxPoint( gDropWinX, gDropWinY ), wxSize( 32, 32 ),
            wxSTAY_ON_TOP | wxFRAME_NO_TASKBAR | wxDIALOG_NO_PARENT | ~wxSYSTEM_MENU | ~wxCAPTION )
 #endif
 {

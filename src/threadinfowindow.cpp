@@ -47,7 +47,7 @@ CThreadInfoWindow::CThreadInfoWindow( wxWindow* parent )
 
     wxListItem itemCol;
 
-    itemCol.SetText( _( "Send/Recv message" ) );
+    itemCol.SetText( wxT( "Send/Recv message" ) );
     itemCol.SetAlign( wxLIST_FORMAT_LEFT );
     InsertColumn( 0, itemCol );
     SetColumnWidth( 0, 600 );
@@ -116,9 +116,9 @@ void CThreadInfoWindow::AddInfo( _MSGTYPE infotype, wxString info, int ntime )
 	stm.Set((time_t)ntime);
 	
 #ifdef WIN32	
-    wxString wts = stm.Format(_("%H:%M:%S "));
+    wxString wts = stm.Format(wxT("%H:%M:%S "));
 #else
-    wxString wts = stm.Format(_("%T "));
+    wxString wts = stm.Format(wxT("%T "));
 #endif
 
     int ncount = GetItemCount();
@@ -175,9 +175,9 @@ void CThreadInfoWindow::AddInfo( _MSGTYPE infotype, std::string info, int ntime 
 	stm.Set((time_t)ntime);
 	
 #ifdef WIN32	
-    wxString wts = stm.Format(_("%H:%M:%S "));
+    wxString wts = stm.Format(wxT("%H:%M:%S "));
 #else
-    wxString wts = stm.Format(_("%T "));
+    wxString wts = stm.Format(wxT("%T "));
 #endif
 
     wts += wxString(info.c_str(),wxConvLocal);
