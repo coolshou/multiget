@@ -838,11 +838,13 @@ std::string CNewTaskDlg::GetUrl()
     if ( !m_sUser.IsEmpty() && !m_sPass.IsEmpty() )
     { //用户和密码两个都不空
         //但是如果都等于缺省值就不重新构造地址
-
+        std::string origin = std::string( m_sUrl.mb_str( wxConvLocal ) );
+        std::string anony = std::string( "anonymous" );
+        std::string unicode = std::string( wxString::FromAscii(gDefFtpPass.c_str()).mb_str() );
         if (
-            m_sUser.mb_str( wxConvLocal ) != "anonymous" ||
+            (origin != anony) ||
 //            m_sPass.mb_str( wxConvLocal ) != gDefFtpPass
-				m_sPass.mb_str(wxConvLocal) != wxString::FromAscii(gDefFtpPass.c_str()).mb_str() //unicode patch
+				(origin != unicode) //unicode patch
         )
         {
             CUrlParser parser;
