@@ -2,7 +2,8 @@
 
 ## Created by Anjuta
 
-INCLUDES = \
+##INCLUDES = \
+AM_CPPFLAGS = \
 	$(WX_CXXFLAGS) \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
