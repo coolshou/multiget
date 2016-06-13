@@ -58,7 +58,9 @@ again:
 
         wxCommandEvent event( mgEVT_CMD_NOTICE, 1 );
         event.SetString( wxString( buf, wxConvLocal ) );
-        m_pParent->AddPendingEvent( event );
+        //m_pParent->AddPendingEvent( event );
+        //wx3.0
+        m_pParent->GetEventHandler()->AddPendingEvent( event );
         fclose ( fp );
         goto again;
     }

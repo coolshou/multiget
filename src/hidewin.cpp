@@ -118,7 +118,9 @@ void CHideWin::OnTimer( wxTimerEvent& event )
 
                 event.SetString( sUrl );
 
-                m_pParent->AddPendingEvent( event );
+                //m_pParent->AddPendingEvent( event );
+                //wx3.0
+                m_pParent->GetEventHandler()->AddPendingEvent( event );
 
             }
             else

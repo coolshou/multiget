@@ -68,7 +68,9 @@ void CFloatWin::OnDropURL( wxString url )
 
     wxCommandEvent event( mgEVT_URL_NOTICE, 1 );
     event.SetString( url );
-    m_pParent->AddPendingEvent( event );
+    //m_pParent->AddPendingEvent( event );
+    //wx3.0
+    m_pParent->GetEventHandler()->AddPendingEvent( event );
 
 }
 

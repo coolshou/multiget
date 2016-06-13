@@ -290,5 +290,7 @@ void MgApp::OnEndSession( wxCloseEvent& event )
 {//seems can't catch this event?
     wxCloseEvent post;
     post.SetCanVeto( false );
-    m_frame->AddPendingEvent( post );
+    //m_frame->AddPendingEvent( post );
+    //wx3.0
+    m_frame->GetEventHandler()->AddPendingEvent( post );
 }

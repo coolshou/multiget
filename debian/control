@@ -3,7 +3,7 @@ Section: net
 Priority: optional
 Maintainer: LI Daobing <lidaobing@debian.org>
 Uploaders: Julian Andres Klode <jak@debian.org>
-Build-Depends: debhelper (>= 5), cdbs, libwxgtk2.8-dev, libglade2-dev, autoconf, automake1.11|automake(>=1.11), dpatch, intltool, libtool
+Build-Depends: debhelper (>= 5), cdbs, libwxgtk3.0-dev, libglade2-dev, autoconf, automake(>=1.15), dpatch, intltool, libtool
 Standards-Version: 3.8.1
 Vcs-Browser: http://git.debian.org/?p=collab-maint/multiget.git
 Vcs-Git: git://git.debian.org/git/collab-maint/multiget.git

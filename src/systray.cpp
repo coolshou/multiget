@@ -115,12 +115,16 @@ void CSysTray::OnMenuRestore( wxCommandEvent& )
         { //maximize it
             //DBGOUT("maximize");
             wxMaximizeEvent max( 2 );
-            m_pMainwin->AddPendingEvent( max );
+            //m_pMainwin->AddPendingEvent( max );
+             //wx3.0
+             m_pMainwin->GetEventHandler()->AddPendingEvent( max );
         }
         else
         { //hide it
             wxIconizeEvent min( 2, true );
-            m_pMainwin->AddPendingEvent( min );
+            //m_pMainwin->AddPendingEvent( min );
+             //wx3.0
+             m_pMainwin->GetEventHandler()->AddPendingEvent( min );
         }
 
         //show=false;
@@ -129,7 +133,9 @@ void CSysTray::OnMenuRestore( wxCommandEvent& )
     {
         //DBGOUT("maximize");
         wxMaximizeEvent max( 2 );
-        m_pMainwin->AddPendingEvent( max );
+        //m_pMainwin->AddPendingEvent( max );
+        //wx3.0
+        m_pMainwin->GetEventHandler()->AddPendingEvent( max );
         //show=true;
     }
 
@@ -299,12 +305,17 @@ void CSysTray::OnLeftButtonClick( wxTaskBarIconEvent& event )
         { //maximize it
             //DBGOUT( "maximize" ); 
             wxMaximizeEvent max( 2 );
-            m_pMainwin->AddPendingEvent( max );
+            //m_pMainwin->AddPendingEvent( max );
+            //wx3.0
+            m_pMainwin->GetEventHandler()->AddPendingEvent( max );
+            
         }
         else
         { //hide it
             wxIconizeEvent min( 2, true );
-            m_pMainwin->AddPendingEvent( min );
+            //m_pMainwin->AddPendingEvent( min );
+            //wx3.0
+            m_pMainwin->GetEventHandler()->AddPendingEvent( min );
         }
 
         //show=false;
@@ -313,7 +324,8 @@ void CSysTray::OnLeftButtonClick( wxTaskBarIconEvent& event )
     {
         //DBGOUT( "maximize" );
         wxMaximizeEvent max( 2 );
-        m_pMainwin->AddPendingEvent( max );
+        //m_pMainwin->AddPendingEvent( max );
+        m_pMainwin->GetEventHandler()->AddPendingEvent( max );
         //show=true;
     }
 
