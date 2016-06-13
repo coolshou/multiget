@@ -210,7 +210,9 @@ void CMgSingleTask::FinishTask( _SINGLE_TASK_STATUS status )
     wxCommandEvent event( mgEVT_TASK_FINISH, m_nTaskID );
     MainFrame *mainwin = ( MainFrame* ) ( wxGetApp().GetTopWindow() );
 
-    mainwin->AddPendingEvent( event );
+    //mainwin->AddPendingEvent( event );
+    //wx3.0
+    mainwin->GetEventHandler()->AddPendingEvent( event );
     //wxPostEvent( mainwin, event );
     pthread_mutex_unlock( &m_QuitMutex );
 
